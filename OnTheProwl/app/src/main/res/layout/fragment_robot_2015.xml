@@ -1,0 +1,260 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/activity_margin"
+    tools:context=".view.fragment.RobotFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:paddingTop="16dp"
+                    android:text="- ROBOT SPECS -"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:fontFamily="sans-serif-light"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorAccent"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/txtSeasonInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-light"/>
+
+                <EditText
+                    android:id="@+id/robotName2015"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Robot Name"
+                    android:gravity="end"
+                    android:layout_margin="5dp"
+                    android:fontFamily="sans-serif-light"/>
+
+                <Spinner
+                    android:id="@+id/robotStyle2015"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:spinnerMode="dropdown"
+                    android:fontFamily="sans-serif-light"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/robotHeight2015"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Height (in.)"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:maxLength="2"
+                        android:inputType="number"
+                        android:layout_margin="5dp"
+                        android:fontFamily="sans-serif-light"/>
+
+                    <EditText
+                        android:id="@+id/robotWeight2015"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Weight (lbs.)"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:inputType="number"
+                        android:maxLength="3"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/driveTrain2015"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:spinnerMode="dropdown"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="sans-serif-light"/>
+
+                    <Spinner
+                        android:id="@+id/wheelType2015"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:spinnerMode="dropdown"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="sans-serif-light"/>
+
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spnStrafe2015"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:spinnerMode="dropdown"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif-light"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:paddingTop="16dp"
+                    android:text="- AUTONOMOUS -"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:fontFamily="sans-serif-light"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorAccent"
+                    android:layout_marginBottom="5dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/moveTote2015"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:spinnerMode="dropdown"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="sans-serif-light"/>
+
+                    <Spinner
+                        android:id="@+id/moveContainer2015"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:spinnerMode="dropdown"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="sans-serif-light"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/acqTote2015"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:spinnerMode="dropdown"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="sans-serif-light"/>
+
+                    <Spinner
+                        android:id="@+id/acqContainer2015"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:spinnerMode="dropdown"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="sans-serif-light"/>
+
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/startingPos2015"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:spinnerMode="dropdown"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif-light"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:paddingTop="16dp"
+                    android:text="- TELEOP -"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:fontFamily="sans-serif-light"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorAccent"
+                    android:layout_marginBottom="5dp"/>
+
+                <EditText
+                    android:id="@+id/maxTote2015"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:hint="Max Tote Capacity"
+                    android:inputType="number"
+                    android:maxLength="2" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>
