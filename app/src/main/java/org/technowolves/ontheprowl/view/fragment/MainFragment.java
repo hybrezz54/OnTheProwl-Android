@@ -153,7 +153,10 @@ public class MainFragment extends ListFragment implements Callback<List<Team>>,
             adapter.addAll(teams);
             adapter.notifyDataSetChanged();
 
-            mListener.onListItemClick(teams.get(0));
+            if (!mListener.getInitState()) {
+                mListener.onListItemClick(teams.get(0));
+                mListener.setInitState(true);
+            }
         }
 
         return fileExists;
@@ -176,6 +179,8 @@ public class MainFragment extends ListFragment implements Callback<List<Team>>,
      */
     public interface MainFragInteractionListener {
         void onListItemClick(Team team);
+        void setInitState(boolean state);
+        boolean getInitState();
     }
 
 }

@@ -14,6 +14,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,8 +35,10 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         RobotFragment.RobotFragInteractionListener {
 
     public static final String PREFS_OPEN_APP = "APP_OPEN_TIME";
+    public static final String PREFS_INIT_STATE = "MAIN_FRAG_INIT";
 
     private ActivityInteractionListener mListener;
+    private SharedPreferences mPrefs;
     private Team mTeam;
 
     private ViewPager viewPager;
@@ -45,13 +48,14 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean(PREFS_OPEN_APP, false)) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!mPrefs.getBoolean(PREFS_OPEN_APP, false)) {
             Intent intent = new Intent(this, IntroActivity.class);
             startActivity(intent);
-            prefs.edit().putBoolean(PREFS_OPEN_APP, true).apply();
+            mPrefs.edit().putBoolean(PREFS_OPEN_APP, true).apply();
         }
 
+        setInitState(false);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -100,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
                     mListener.onButtonPressed();
             }
         });
-
     }
 
     @Override
@@ -147,6 +150,20 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         return mTeam;
     }
 
+    @Override
+    public void setInitState(boolean state) {
+        if (mPrefs != null)
+            mPrefs.edit().putBoolean(PREFS_INIT_STATE, state).commit();
+    }
+
+    @Override
+    public boolean getInitState() {
+        if (mPrefs != null)
+            return mPrefs.getBoolean(PREFS_INIT_STATE, false);
+
+        return false;
+    }
+
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(MainFragment.newInstance(), getString(R.string.tab_one));
@@ -156,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         viewPager.setAdapter(adapter);
     }
 
-    public void onChangeFabIcon(int resource) {
+    private void onChangeFabIcon(int resource) {
         if (fab != null)
             fab.setImageDrawable(getApplicationContext()
                     .getResources()

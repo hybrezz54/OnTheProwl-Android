@@ -214,6 +214,7 @@ public class RobotFragment extends Fragment implements ActivityInteractionListen
                 String json = new Gson().toJson(mRobot);
                 IoUtils.writeBytestoFile(getContext(), SharedMap.USER_DATA_DIR,
                         getFileName(mRobot.getNumber()), json.getBytes());
+                mFragListener.onCreateSnackbar(robotName, "Robot Specs Saved");
             }
         }
     }

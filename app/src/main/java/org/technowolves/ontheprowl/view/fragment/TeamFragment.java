@@ -102,13 +102,13 @@ public class TeamFragment extends Fragment implements ActivityInteractionListene
         award1.setAdapter(award);
         award2.setAdapter(award);
 
-        /*mTeam = null;
+        mTeam = null;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
                 setupData();
             }
-        }, 500);*/
+        }, 500);
 
         return view;
     }
@@ -151,28 +151,10 @@ public class TeamFragment extends Fragment implements ActivityInteractionListene
                 String json = new Gson().toJson(mTeam);
                 IoUtils.writeBytestoFile(getContext(), SharedMap.USER_DATA_DIR,
                         getFileName(mTeam.getNumber()), json.getBytes());
+                mFragListener.onCreateSnackbar(website, "Team Info Saved");
             }
         }
     }
-
-    /*public void onListItemClick(Team team) {
-        mTeam = team;
-
-        if (team != null) {
-            String number = team.getNumber();
-            boolean fileExists = IoUtils.isFileExisting(getContext(),
-                    SharedMap.USER_DATA_DIR, getFileName(number));
-
-            if (fileExists) {
-                Gson gson = new Gson();
-                String json = IoUtils.readStringFromFile(getContext(),
-                        SharedMap.USER_DATA_DIR, getFileName(number));
-                mTeam = gson.fromJson(json, Team.class);
-            }
-        }
-
-        setupViews();
-    }*/
 
     public void setupData() {
         mTeam = mFragListener.getSelectedTeam();
