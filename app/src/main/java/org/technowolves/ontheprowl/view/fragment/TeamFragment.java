@@ -155,7 +155,7 @@ public class TeamFragment extends Fragment implements ActivityInteractionListene
         }
     }
 
-    public void onListItemClick(Team team) {
+    /*public void onListItemClick(Team team) {
         mTeam = team;
 
         if (team != null) {
@@ -164,7 +164,6 @@ public class TeamFragment extends Fragment implements ActivityInteractionListene
                     SharedMap.USER_DATA_DIR, getFileName(number));
 
             if (fileExists) {
-
                 Gson gson = new Gson();
                 String json = IoUtils.readStringFromFile(getContext(),
                         SharedMap.USER_DATA_DIR, getFileName(number));
@@ -173,9 +172,9 @@ public class TeamFragment extends Fragment implements ActivityInteractionListene
         }
 
         setupViews();
-    }
+    }*/
 
-    /*public void setupData() {
+    public void setupData() {
         mTeam = mFragListener.getSelectedTeam();
 
         if (mTeam != null) {
@@ -195,7 +194,7 @@ public class TeamFragment extends Fragment implements ActivityInteractionListene
         }
 
         setupViews();
-    }*/
+    }
 
     private void setupViews() {
         if (mTeam != null) {

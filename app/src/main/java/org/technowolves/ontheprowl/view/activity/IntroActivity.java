@@ -13,6 +13,8 @@ public class IntroActivity extends AppIntro {
     public void init(Bundle savedInstanceState) {
         addSlide(AppIntroFragment.newInstance("Lions", "Lion, lion everywhere!",
                 R.drawable.ic_done_white_24px, R.color.colorAccent));
+        addSlide(AppIntroFragment.newInstance("Lions", "Lion, lion everywhere!",
+                R.drawable.ic_done_white_24px, R.color.colorAccent));
     }
 
     @Override

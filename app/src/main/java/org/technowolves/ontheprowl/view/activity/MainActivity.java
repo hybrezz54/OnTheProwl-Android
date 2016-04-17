@@ -38,9 +38,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
     private ActivityInteractionListener mListener;
     private Team mTeam;
 
-    private TeamFragment teamFragment;
     private ViewPager viewPager;
-
     private FloatingActionButton fab;
 
     @Override
@@ -73,11 +71,14 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
                 if (fragment instanceof ActivityInteractionListener)
                     mListener = (ActivityInteractionListener) fragment;
 
-                if (fragment instanceof MainFragment)
+                if (fragment instanceof MainFragment) {
                     onChangeFabIcon(R.drawable.ic_cloud_download_white_36dp);
-                else if (fragment instanceof TeamFragment ||
-                        fragment instanceof RobotFragment)
+                } else if (fragment instanceof TeamFragment) {
                     onChangeFabIcon(R.drawable.ic_done_all_white_36dp);
+                    ((TeamFragment) fragment).setupData();
+                } else if (fragment instanceof RobotFragment) {
+                    onChangeFabIcon(R.drawable.ic_done_all_white_36dp);
+                }
             }
 
             @Override
@@ -90,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
                     mListener = (ActivityInteractionListener) fragment;
             }
         });
-
-        tabLayout.getTabAt(0).select();
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -141,9 +140,6 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
     @Override
     public void onListItemClick(Team team) {
         mTeam = team;
-
-        if (teamFragment != null)
-            teamFragment.onListItemClick(team);
     }
 
     @Override
@@ -152,11 +148,9 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
     }
 
     private void setupViewPager() {
-        teamFragment = TeamFragment.newInstance();
-
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(MainFragment.newInstance(), getString(R.string.tab_one));
-        adapter.addFragment(teamFragment, getString(R.string.tab_two));
+        adapter.addFragment(TeamFragment.newInstance(), getString(R.string.tab_two));
         adapter.addFragment(RobotFragment.newInstance(), getString(R.string.tab_three));
         adapter.instantiateItem(viewPager, 2);
         viewPager.setAdapter(adapter);
