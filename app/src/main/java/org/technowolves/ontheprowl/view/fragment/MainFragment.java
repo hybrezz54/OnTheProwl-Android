@@ -93,6 +93,8 @@ public class MainFragment extends ListFragment implements Callback<List<Team>>,
 
     @Override
     public void onButtonPressed() {
+        mFragListener.onCreateSnackbar(getListView(), "Downloading...");
+
         if (!addTeamsFromStorage()) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://www.thebluealliance.com/")

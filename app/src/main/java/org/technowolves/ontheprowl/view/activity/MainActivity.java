@@ -107,6 +107,12 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // update list after import
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -121,6 +127,15 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_export:
+                Intent exportIntent = new Intent(this, ExportActivity.class);
+                //exportIntent.putExtra("", false);
+                startActivity(exportIntent);
+                return true;
+            case R.id.action_import:
+                Intent importIntent = new Intent(this, ExportActivity.class);
+                startActivityForResult(importIntent, 1);
+                return true;
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);

@@ -31,4 +31,5 @@ dependencies {
     compile 'com.github.paolorotolo:appintro:3.4.0'
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.7.3'
+    compile 'com.nbsp:library:1.08'
 }
