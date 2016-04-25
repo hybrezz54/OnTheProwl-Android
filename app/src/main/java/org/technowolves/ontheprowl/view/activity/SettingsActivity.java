@@ -1,6 +1,9 @@
 package org.technowolves.ontheprowl.view.activity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -102,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity implements Callback<List
     }
 
     public void getEvents() {
-        if (!addTeamsFromStorage()) {
+        if (!addEventsFromStorage() || isNetworkAvailable()) {
             SharedPreferences manager = PreferenceManager.getDefaultSharedPreferences(this);
             int idx = Integer.parseInt(manager.getString(FRC_SEASON, "0"));
             String year = getResources().getStringArray(R.array.season_names)[idx];
@@ -119,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity implements Callback<List
         }
     }
 
-    private boolean addTeamsFromStorage() {
+    private boolean addEventsFromStorage() {
         boolean fileExists = IoUtils.isFileExisting(this, SharedMap.TBA_DATA_DIR, getFileName());
 
         if (fileExists && eventInfo != null) {
@@ -132,6 +135,13 @@ public class SettingsActivity extends AppCompatActivity implements Callback<List
         }
 
         return fileExists;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private String getFileName() {

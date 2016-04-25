@@ -14,7 +14,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -125,15 +124,17 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         switch (id) {
             case R.id.action_export:
                 Intent exportIntent = new Intent(this, ExportActivity.class);
-                //exportIntent.putExtra("", false);
+                exportIntent.putExtra(ExportActivity.EVENT_KEY,
+                        mPrefs.getString(SettingsActivity.EVENT_KEY, "2016ncral"));
                 startActivity(exportIntent);
                 return true;
             case R.id.action_import:
-                Intent importIntent = new Intent(this, ExportActivity.class);
+                Intent importIntent = new Intent(this, ImportActivity.class);
                 startActivityForResult(importIntent, 1);
                 return true;
             case R.id.action_settings:
