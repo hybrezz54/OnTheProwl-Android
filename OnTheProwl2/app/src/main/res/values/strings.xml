@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">OnTheProwl!</string>
+    <string name="download_failure">Failed to download teams from The Blue Alliance</string>
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Settings</string>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <!-- Example settings for Event -->
+    <string name="pref_header_event">Event</string>
+
+    <string name="frc_season_key">frc_season</string>
+    <string name="frc_district_key">frc_district</string>
+    <string name="data_buttons_key">data_buttons</string>
+
+    <string name="pref_title_frc_season">FRC Season</string>
+    <string name="pref_title_frc_district">District</string>
+
+    <string-array name="pref_titles_frc_seasons">
+        <item>FRC STEAMWORKS</item>
+    </string-array>
+    <string-array name="pref_values_frc_seasons">
+        <item>2017</item>
+    </string-array>
+
+    <string name="pref_header_event_name">Event Name</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="clear_data">Clear Data</string>
+    <string name="dlg_clear_cache">Clear Cache?</string>
+    <string name="msg_clear_cache">You will have to connect to the internet again before you can use the app!</string>
+    <string name="dlg_clear_data">Clear Data?</string>
+    <string name="msg_clear_data">This will delete any collected data!</string>
+
+    <!-- Navigation menu for TeamActivity -->
+    <string name="title_activity_team">TeamActivity</string>
+    <string name="title_info">Team Info</string>
+    <string name="title_robot">Robot Data</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

@@ -1,0 +1,24 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="2017"
+        android:entries="@array/pref_titles_frc_seasons"
+        android:entryValues="@array/pref_values_frc_seasons"
+        android:key="@string/frc_season_key"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_frc_season" />
+
+    <ListPreference
+        android:entries="@array/pref_titles_frc_seasons"
+        android:entryValues="@array/pref_values_frc_seasons"
+        android:key="@string/frc_district_key"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_frc_district" />
+
+    <Preference
+        android:layout="@layout/data_buttons"
+        android:key="@string/data_buttons_key"></Preference>
+
+</PreferenceScreen>
