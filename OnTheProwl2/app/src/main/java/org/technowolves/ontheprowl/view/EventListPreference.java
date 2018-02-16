@@ -3,16 +3,9 @@ package org.technowolves.ontheprowl.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.ListPreference;
-import android.support.design.widget.Snackbar;
 import android.util.AttributeSet;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.technowolves.ontheprowl.R;
-import org.technowolves.ontheprowl.SharedMap;
 import org.technowolves.ontheprowl.model.Event;
-import org.technowolves.ontheprowl.util.IoUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -106,11 +99,11 @@ public class EventListPreference extends ListPreference implements Callback<List
      * @return Whether or not file exists
      */
     private boolean addTeamsFromStorage() {
-        /*boolean fileExists = IoUtils.isFileExisting(this, SharedMap.TBA_DATA_DIR, getFileName());
+        /*boolean fileExists = CSVUtil.isFileExisting(this, SharedMap.TBA_DATA_DIR, getFileName());
 
         if (fileExists && eventInfo != null) {
             Gson gson = new Gson();
-            String json = IoUtils.readStringFromFile(this, SharedMap.TBA_DATA_DIR, getFileName());
+            String json = CSVUtil.readStringFromFile(this, SharedMap.TBA_DATA_DIR, getFileName());
             List<Event> events = gson.fromJson(json, new TypeToken<List<Event>>() {}.getType());
             EventAdapter adapter = new EventAdapter(this,
                     android.R.layout.simple_dropdown_item_1line, events);

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -22,7 +21,7 @@ import org.technowolves.ontheprowl.SharedMap;
 import org.technowolves.ontheprowl.TeamAdapter;
 import org.technowolves.ontheprowl.TheBlueAllianceService;
 import org.technowolves.ontheprowl.model.Team;
-import org.technowolves.ontheprowl.util.IoUtils;
+import org.technowolves.ontheprowl.util.CSVUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -149,14 +148,14 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Tea
      */
     private boolean addTeamsFromStorage() {
         // TODO Parse files more efficiently than appending into string
-        boolean fileExists = IoUtils.doesFileExist(this,
+        boolean fileExists = CSVUtil.doesFileExist(this,
                 SharedMap.TBA_DATA_DIR, getFileName());
 
         // checks whether file exists
         if (fileExists) {
             // parse the JSON in the file
             Gson gson = new Gson();
-            String json = IoUtils.readLinesFromFile(this,
+            String json = CSVUtil.readLinesFromFile(this,
                     SharedMap.TBA_DATA_DIR, getFileName());
             List<Team> teams = gson.fromJson(json, new TypeToken<List<Team>>() {}.getType());
 
