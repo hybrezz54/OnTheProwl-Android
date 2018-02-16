@@ -2,7 +2,9 @@ package org.technowolves.ontheprowl.model;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import org.technowolves.ontheprowl.util.Data;
+
+import java.util.List;
 
 /**
  * Class to model a polled IO Operation in the IOQueue.
@@ -24,7 +26,7 @@ public class IOOperation {
     }
 
     /** List of data objects */
-    private ArrayList data;
+    private List data;
 
     /** File path */
     private String path;
@@ -50,10 +52,42 @@ public class IOOperation {
      * @param fileName The path of the location to save the data
      * @param data The name of the file where data will be written
      */
-    public IOOperation(Context context, FileType type, String fileName, ArrayList data) {
+    public IOOperation(Context context, FileType type, String fileName, List<? extends Data> data) {
         this.type = type;
         this.path = context.getFilesDir() + fileName;
         this.data = data;
+    }
+
+    public boolean execute() {
+        if (isRead()) {
+            // do something here
+            return true;
+        } else if (isWrite()) {
+            // do something here
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Return whether this operation is to read data from a file
+     *
+     * @return True if data will be read from a file
+     *         and false otherwise
+     */
+    public boolean isRead() {
+        return (data == null || data.size() == 0);
+    }
+
+    /**
+     * Return whether this operation is to write data to a file
+     *
+     * @return True if data will be written to a file
+     *         and false otherwise
+     */
+    public boolean isWrite() {
+        return (data != null && data.size() > 0);
     }
 
 }
