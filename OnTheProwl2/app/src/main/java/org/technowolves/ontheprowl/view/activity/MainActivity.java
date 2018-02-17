@@ -20,7 +20,7 @@ import org.technowolves.ontheprowl.R;
 import org.technowolves.ontheprowl.SharedMap;
 import org.technowolves.ontheprowl.TeamAdapter;
 import org.technowolves.ontheprowl.TheBlueAllianceService;
-import org.technowolves.ontheprowl.model.Team;
+import org.technowolves.ontheprowl.model.team.Team;
 import org.technowolves.ontheprowl.util.CSVUtil;
 
 import java.util.ArrayList;

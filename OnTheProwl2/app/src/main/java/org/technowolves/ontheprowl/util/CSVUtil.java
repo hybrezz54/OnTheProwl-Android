@@ -29,10 +29,11 @@ public class CSVUtil {
      * into a list of objects
      *
      * @param file The object of the file to read from
+     * @param type The class of the object to parse to
      * @return The CSV data stored in a list of objects. Returns
      *         null if the file was not read successfully.
      */
-    public static List<? extends Data> onRead(File file) {
+    public static List<? extends Data> read(File file, Class<? extends Data> type) {
         List<? extends Data> data = null;
         BufferedReader reader = null;
 
@@ -40,7 +41,7 @@ public class CSVUtil {
             // init reader and parser
             reader = new BufferedReader(new FileReader(file));
             CsvToBean csv = new CsvToBeanBuilder(reader)
-                    .withType(Data.class)
+                    .withType(type)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
 
@@ -67,11 +68,12 @@ public class CSVUtil {
      * into a list of objects
      *
      * @param file The path of the file to read from
+     * @param type The class of the object to parse to
      * @return The CSV data stored in a list of objects. Returns
      *         null if the file was not read successfully.
      */
-    public static List<? extends Data> onRead(String file) {
-        return onRead(new File(file));
+    public static List<? extends Data> read(String file, Class<? extends Data> type) {
+        return read(new File(file), type);
     }
 
     /**
@@ -84,7 +86,7 @@ public class CSVUtil {
      * @return The CSV data stored in a list of String arrays. Returns
      *         null if the file was not read successfully.
      */
-    public static List<String[]> onRead(String file, boolean withHeader) {
+    public static List<String[]> read(String file, boolean withHeader) {
         List<String[]> data = null;
         BufferedReader reader = null;
 
@@ -123,7 +125,7 @@ public class CSVUtil {
      * @return True if the data was written successfully and
      * false otherwise
      */
-    public static boolean onWrite(String file, List<? extends Data> data) {
+    public static boolean write(String file, List<? extends Data> data) {
         BufferedWriter writer = null;
 
         try {
@@ -167,7 +169,7 @@ public class CSVUtil {
      * @return True if the data was written successfully and
      *         false otherwise
      */
-    public static boolean onWrite(String file, String[][] data) {
+    public static boolean write(String file, String[][] data) {
         BufferedWriter writer = null;
 
         try {
@@ -203,11 +205,21 @@ public class CSVUtil {
         return false;
     }
 
-    public static String toJSON(String file) {
+    /**
+     *
+     * @param data
+     * @return
+     */
+    public static String toCSV(String data) {
         return null;
     }
 
-    public static String toJSON(ArrayList data, String file) {
+    /**
+     *
+     * @param data
+     * @return
+     */
+    public static String toCSV(List<? extends Data> data) {
         return null;
     }
 

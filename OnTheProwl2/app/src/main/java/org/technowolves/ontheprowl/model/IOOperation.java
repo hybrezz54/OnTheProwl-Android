@@ -60,10 +60,10 @@ public class IOOperation {
 
     public boolean execute() {
         if (isRead()) {
-            // do something here
+            // TODO do something here
             return true;
         } else if (isWrite()) {
-            // do something here
+            // TODO do something here
             return true;
         }
 

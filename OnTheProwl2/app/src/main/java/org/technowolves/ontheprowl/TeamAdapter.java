@@ -1,15 +1,13 @@
 package org.technowolves.ontheprowl;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import org.technowolves.ontheprowl.model.Team;
+import org.technowolves.ontheprowl.model.team.Team;
 
 import java.util.ArrayList;
 

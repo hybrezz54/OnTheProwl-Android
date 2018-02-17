@@ -2,7 +2,7 @@ package org.technowolves.ontheprowl;
 
 import org.technowolves.ontheprowl.model.District;
 import org.technowolves.ontheprowl.model.Event;
-import org.technowolves.ontheprowl.model.Team;
+import org.technowolves.ontheprowl.model.team.Team;
 
 import java.util.List;
 

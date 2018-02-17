@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -14,7 +13,7 @@ import org.technowolves.ontheprowl.Constants;
 import org.technowolves.ontheprowl.view.fragment.InfoFragment;
 import org.technowolves.ontheprowl.R;
 import org.technowolves.ontheprowl.view.fragment.RobotFragment;
-import org.technowolves.ontheprowl.model.Team;
+import org.technowolves.ontheprowl.model.team.Team;
 
 public class TeamActivity extends AppCompatActivity implements
         InfoFragment.OnFragmentInteractionListener, RobotFragment.OnFragmentInteractionListener {

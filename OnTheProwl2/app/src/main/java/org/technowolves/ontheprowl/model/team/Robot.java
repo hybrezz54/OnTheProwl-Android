@@ -1,4 +1,4 @@
-package org.technowolves.ontheprowl.model;
+package org.technowolves.ontheprowl.model.team;
 
 /**
  * The model for a Team robot object
