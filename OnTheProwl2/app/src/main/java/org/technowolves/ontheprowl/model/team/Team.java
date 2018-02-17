@@ -11,17 +11,17 @@ public class Team {
     /** The number of the team */
     @SerializedName("number")
     @Expose
-    String number;
+    private String number;
 
     /** The info of the team */
     @SerializedName("info")
     @Expose
-    Info info;
+    private Info info;
 
     /** The info of the team's robot */
     @SerializedName("Robot")
     @Expose
-    Robot robot;
+    private Robot robot;
 
     /**
      * Construct a team object
@@ -40,7 +40,9 @@ public class Team {
      * @param robot The info of the team's robot
      */
     public Team(String number, Info info, Robot robot) {
-        this.number = number;
+        setNumber(number);
+        setInfo(info);
+        setRobot(robot);
     }
 
     /** The getter for the team's number */

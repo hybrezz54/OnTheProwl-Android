@@ -9,39 +9,39 @@ import com.google.gson.annotations.SerializedName;
 public class Info {
 
     /** The team's name */
-    @SerializedName("nickname")
+    @SerializedName("name")
     @Expose
-    String name;
+    private String name;
 
     /** The team's website */
     @SerializedName("website")
     @Expose
-    String website;
+    private String website;
 
     /** The team's location */
     @SerializedName("location")
     @Expose
-    String location;
+    private String location;
 
     /** The team's rookie year */
     @SerializedName("rookie_year")
     @Expose
-    String rookie;
+    private String rookie;
 
     /** The number of competitions signed up for this year */
     @SerializedName("num_competitions")
     @Expose
-    int competitions;
+    private int competitions;
 
     /** The team's ranking */
     @SerializedName("ranking")
     @Expose
-    int ranking;
+    private int ranking;
 
     /** The notes on the team */
     @SerializedName("notes")
     @Expose
-    String notes;
+    private String notes;
 
     /**
      * Construct a new object for the team's info
@@ -56,13 +56,13 @@ public class Info {
      */
     public Info(String name, String website, String location, String rookie, int competitions,
                 int ranking, String notes) {
-        this.name = name;
-        this.website = website;
-        this.location = location;
-        this.rookie = rookie;
-        this.competitions = competitions;
-        this.ranking = ranking;
-        this.notes = notes;
+        setName(name);
+        setWebsite(website);
+        setLocation(location);
+        setRookie(rookie);
+        setCompetitions(competitions);
+        setRanking(ranking);
+        setNotes(notes);
     }
 
     /** The getter for the team's name */
