@@ -2,29 +2,14 @@
     <string name="app_name">OnTheProwl!</string>
     <string name="download_failure">Failed to download teams from The Blue Alliance</string>
 
+    <!-- Navigation menu for TeamActivity -->
+    <string name="title_activity_team">TeamActivity</string>
+    <string name="title_info">Team Info</string>
+    <string name="title_robot">Robot Data</string>
+
     <!-- Strings related to Settings -->
-    <string name="title_activity_settings">Settings</string>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <!-- Example settings for Event -->
-    <string name="pref_header_event">Event</string>
-
-    <string name="frc_season_key">frc_season</string>
-    <string name="frc_district_key">frc_district</string>
-    <string name="data_buttons_key">data_buttons</string>
+    <string name="title_activity_config">Settings</string>
+    <string name="pref_header_general">General</string>
 
     <string name="pref_title_frc_season">FRC Season</string>
     <string name="pref_title_frc_district">District</string>
@@ -44,11 +29,6 @@
     <string name="dlg_clear_data">Clear Data?</string>
     <string name="msg_clear_data">This will delete any collected data!</string>
 
-    <!-- Navigation menu for TeamActivity -->
-    <string name="title_activity_team">TeamActivity</string>
-    <string name="title_info">Team Info</string>
-    <string name="title_robot">Robot Data</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="team_number">Team Number</string>
+    <string name="server_url">Server URL</string>
 </resources>

@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.technowolves.ontheprowl">
 
+    <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,16 +25,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity
             android:name=".view.activity.TeamActivity"
-            android:label="@string/title_activity_team"></activity>
+            android:label="@string/title_activity_team" />
+        <activity
+            android:name=".view.activity.ConfigActivity"
+            android:label="@string/title_activity_config"></activity>
     </application>
-
-    <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

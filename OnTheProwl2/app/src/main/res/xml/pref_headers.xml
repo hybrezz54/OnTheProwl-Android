@@ -3,8 +3,8 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="org.technowolves.ontheprowl.view.activity.SettingsActivity$OtpPrefFragment"
+        android:fragment="org.technowolves.ontheprowl.view.activity.ConfigActivity$GeneralPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_header_event" />
+        android:title="@string/pref_header_general" />
 
 </preference-headers>
