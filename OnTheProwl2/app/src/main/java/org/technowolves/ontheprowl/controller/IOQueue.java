@@ -6,21 +6,35 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Class to queue file input/output operations to
- * save resources
+ * A class designed to queue file input/output operations to
+ * save resources. The class enforces a singleton design pattern.
  *
  * @author Hamzah Aslam
  */
-
 public class IOQueue {
+
+    /** IOQueue single instance */
+    private static IOQueue mInstance;
 
     /** Queue of operations */
     private Queue<IOOperation> queue;
 
     /**
+     * Return an instance of the IOQueue
+     *
+     * @return An instance of the IOQueue
+     */
+    public static IOQueue getInstance() {
+        if (mInstance == null)
+            mInstance = new IOQueue();
+
+        return mInstance;
+    }
+
+    /**
      * Constructor for IOQueue class
      */
-    public IOQueue() {
+    private IOQueue() {
         queue = new LinkedList<>();
     }
 
@@ -42,7 +56,7 @@ public class IOQueue {
      * @return True if the operation has been removed
      *         successfully and false otherwise
      */
-    public boolean dequeue(int index) {
+    public boolean cancel(int index) {
         return queue.remove(index);
     }
 
@@ -53,8 +67,18 @@ public class IOQueue {
      * @return True if the operation has been removed
      *         successfully and false otherwise
      */
-    public boolean dequeue(IOOperation operation) {
+    public boolean cancel(IOOperation operation) {
         return queue.remove(operation);
+    }
+
+    /**
+     * Remove the most recent added IO operation in the queue
+     *
+     * @return True if the operation has been removed successfully
+     *         and false otherwise
+     */
+    public boolean cancelRecent() {
+        return cancel(queue.size() - 1);
     }
 
     /**
@@ -70,7 +94,7 @@ public class IOQueue {
 
         // iterate over elements and execute their operations
         for (IOOperation o : new LinkedList<IOOperation>(queue)) {
-            if (o.execute()) dequeue(o);
+            if (o.execute()) cancel(o);
             else all = false;
         }
 
