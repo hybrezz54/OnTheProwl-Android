@@ -154,6 +154,8 @@ public class ConfigActivity extends AppCompatPreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("team_number"));
             bindPreferenceSummaryToValue(findPreference("frc_season"));
+            bindPreferenceSummaryToValue(findPreference("frc_district"));
+            bindPreferenceSummaryToValue(findPreference("server_url"));
         }
 
         @Override
