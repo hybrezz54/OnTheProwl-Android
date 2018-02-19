@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "org.technowolves.ontheprowl"
+        applicationId 'com.hybrez.com.hybrez.ontheprowl'
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
@@ -17,6 +17,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 

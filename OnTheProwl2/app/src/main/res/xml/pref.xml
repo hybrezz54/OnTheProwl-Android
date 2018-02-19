@@ -15,7 +15,7 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_title_frc_season" />
 
-    <org.technowolves.ontheprowl.view.EventListPreference
+    <com.hybrez.ontheprowl.view.EventPreference
         android:layout="@layout/preference_events" />
 
     <EditTextPreference
