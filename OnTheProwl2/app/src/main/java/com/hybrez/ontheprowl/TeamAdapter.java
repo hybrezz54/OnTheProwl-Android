@@ -36,11 +36,11 @@ public class TeamAdapter extends ArrayAdapter<Team> {
 
         // get the view of the list item
         if (convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(org.technowolves.ontheprowl.R.layout.team_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.team_item, parent, false);
 
         // find the views in the view
-        TextView txtNumber = (TextView) convertView.findViewById(org.technowolves.ontheprowl.R.id.team_number);
-        TextView txtName = (TextView) convertView.findViewById(org.technowolves.ontheprowl.R.id.team_name);
+        TextView txtNumber = (TextView) convertView.findViewById(R.id.team_number);
+        TextView txtName = (TextView) convertView.findViewById(R.id.team_name);
 
         // update textviews appropriately
         txtNumber.setText(team.getNumber());

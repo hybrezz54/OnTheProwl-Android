@@ -14,9 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.hybrez.ontheprowl.Constants;
-import org.technowolves.ontheprowl.R;
+import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.TheBlueAllianceService;
-import com.hybrez.ontheprowl.ConfigManager;
+import com.hybrez.ontheprowl.controller.ConfigManager;
 import com.hybrez.ontheprowl.model.Event;
 
 import java.util.Collections;
@@ -99,7 +99,7 @@ public class EventPreference extends Preference implements Callback<List<Event>>
 
     @Override
     public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-        List<Event> events = (List) response.body();
+        List<Event> events = response.body();
         Collections.sort(events, new Comparator<Event>() {
             @Override
             public int compare(Event event1, Event event2) {

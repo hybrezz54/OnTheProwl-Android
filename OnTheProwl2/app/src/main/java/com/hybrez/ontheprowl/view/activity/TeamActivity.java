@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.hybrez.ontheprowl.Constants;
+import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.view.fragment.InfoFragment;
-import org.technowolves.ontheprowl.R;
 import com.hybrez.ontheprowl.view.fragment.RobotFragment;
 import com.hybrez.ontheprowl.model.team.Team;
 
@@ -41,7 +41,7 @@ public class TeamActivity extends AppCompatActivity implements
             switch (item.getItemId()) {
                 case R.id.navigation_info:
                     // Replace frame with InfoFragment and update title
-                    getSupportActionBar().setTitle(mTeam.getName());
+                    getSupportActionBar().setTitle(mTeam.getInfo().getName());
                     ft.replace(R.id.content, mInfoFrag)
                             .commit();
                     return true;
@@ -65,15 +65,14 @@ public class TeamActivity extends AppCompatActivity implements
 
         // Get team number and name
         Intent intent = getIntent();
-        mTeam = new Team(intent.getStringExtra(Constants.TEAM_NUMBER),
-                intent.getStringExtra(Constants.TEAM_NAME));
+        mTeam = new Team(intent.getStringExtra(Constants.TEAM_NUMBER));
 
         // Create instances of fragments
-        mInfoFrag = InfoFragment.newInstance(mTeam.getName(), mTeam.getNumber());
+        mInfoFrag = InfoFragment.newInstance(mTeam.getInfo().getName(), mTeam.getNumber());
         mRobotFrag = RobotFragment.newInstance(mTeam.getNumber());
 
         // Update action bar text
-        getSupportActionBar().setTitle(mTeam.getName());
+        getSupportActionBar().setTitle(mTeam.getInfo().getName());
 
         // Add first shown fragment to activity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

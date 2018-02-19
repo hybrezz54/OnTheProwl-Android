@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Tea
         Log.e("Main Acitivty", response.toString());
 
         // compare lists to see if equal
-        List<Team> teams = (List) response.body();
+        List<Team> teams = response.body();
         Collections.sort(teams, new Comparator<Team>() {
             @Override
             public int compare(Team o1, Team o2) {

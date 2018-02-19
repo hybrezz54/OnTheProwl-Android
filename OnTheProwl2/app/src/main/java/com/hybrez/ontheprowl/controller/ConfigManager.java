@@ -1,11 +1,12 @@
-package com.hybrez.ontheprowl;
+package com.hybrez.ontheprowl.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 /**
- * Created by Hamzah on 2/18/2018.
+ * Class to manage preferences stored in
+ * ConfigActivity
  */
 public class ConfigManager {
 
