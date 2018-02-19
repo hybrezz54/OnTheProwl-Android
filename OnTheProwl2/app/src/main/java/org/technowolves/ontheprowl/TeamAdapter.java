@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class TeamAdapter extends ArrayAdapter<Team> {
 
-    /** init variables for selected item */
+    /** init variable for selected item */
     private int selectedIndex;
 
     /**
@@ -44,7 +44,7 @@ public class TeamAdapter extends ArrayAdapter<Team> {
 
         // update textviews appropriately
         txtNumber.setText(team.getNumber());
-        txtName.setText(team.getName());
+        txtName.setText(team.getInfo().getName());
 
         return convertView;
     }

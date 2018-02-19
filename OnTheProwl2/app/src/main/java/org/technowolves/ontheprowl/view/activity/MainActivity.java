@@ -22,6 +22,7 @@ import org.technowolves.ontheprowl.TeamAdapter;
 import org.technowolves.ontheprowl.TheBlueAllianceService;
 import org.technowolves.ontheprowl.model.team.Team;
 import org.technowolves.ontheprowl.util.CSVUtil;
+import org.technowolves.ontheprowl.util.IOUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Tea
 
                 // Launch TeamActivity with team info
                 Intent intent = new Intent(MainActivity.this, TeamActivity.class);
-                intent.putExtra(Constants.TEAM_NAME, team.getName());
+                intent.putExtra(Constants.TEAM_NAME, team.getInfo().getName());
                 intent.putExtra(Constants.TEAM_NUMBER, team.getNumber());
                 startActivity(intent);
             }
@@ -148,14 +149,14 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Tea
      */
     private boolean addTeamsFromStorage() {
         // TODO Parse files more efficiently than appending into string
-        boolean fileExists = CSVUtil.doesFileExist(this,
+        boolean fileExists = IOUtils.doesFileExist(this,
                 SharedMap.TBA_DATA_DIR, getFileName());
 
         // checks whether file exists
         if (fileExists) {
             // parse the JSON in the file
             Gson gson = new Gson();
-            String json = CSVUtil.readLinesFromFile(this,
+            String json = IOUtils.read(this,
                     SharedMap.TBA_DATA_DIR, getFileName());
             List<Team> teams = gson.fromJson(json, new TypeToken<List<Team>>() {}.getType());
 

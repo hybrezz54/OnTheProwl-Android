@@ -7,7 +7,7 @@
         android:inputType="number" />
 
     <ListPreference
-        android:defaultValue="2017"
+        android:defaultValue="2018"
         android:entries="@array/pref_titles_frc_seasons"
         android:entryValues="@array/pref_values_frc_seasons"
         android:key="frc_season"
@@ -15,13 +15,8 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_title_frc_season" />
 
-    <ListPreference
-        android:entries="@array/pref_titles_frc_seasons"
-        android:entryValues="@array/pref_values_frc_seasons"
-        android:key="frc_district"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
-        android:title="@string/pref_title_frc_district" />
+    <org.technowolves.ontheprowl.view.EventListPreference
+        android:layout="@layout/preference_events" />
 
     <EditTextPreference
         android:key="server_url"
@@ -30,6 +25,6 @@
 
     <Preference
         android:layout="@layout/data_buttons"
-        android:key="data_buttons"></Preference>
+        android:key="data_buttons" />
 
 </PreferenceScreen>

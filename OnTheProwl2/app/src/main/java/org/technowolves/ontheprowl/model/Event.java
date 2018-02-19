@@ -17,21 +17,15 @@ public class Event {
     @Expose
     String name;
 
-    @SerializedName("location")
-    @Expose
-    String location;
-
     /**
      * Set the event info
      *
      * @param key The event key
      * @param name The event name
-     * @param location The event location
      */
-    public Event(String key, String name, String location) {
-        this.key = key;
-        this.name = name;
-        this.location = location;
+    public Event(String key, String name) {
+        setKey(key);
+        setName(name);
     }
 
     /**
@@ -68,24 +62,6 @@ public class Event {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * The getter for the event location
-     *
-     * @return The event location
-     */
-    public String getLocation() {
-        return location;
-    }
-
-    /**
-     * The setter for the event location
-     *
-     * @param location The event location
-     */
-    public void setLocation(String location) {
-        this.location = location;
     }
 
 }
