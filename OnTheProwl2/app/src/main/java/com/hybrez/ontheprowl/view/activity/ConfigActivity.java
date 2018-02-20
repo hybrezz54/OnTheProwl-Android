@@ -17,7 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.technowolves.ontheprowl.*;
+import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.view.EventPreference;
 
 import java.util.List;
@@ -166,7 +166,6 @@ public class ConfigActivity extends AppCompatPreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("team_number"));
             bindPreferenceSummaryToValue(findPreference("frc_season"));
-            bindPreferenceSummaryToValue(findPreference("frc_district"));
             bindPreferenceSummaryToValue(findPreference("server_url"));
         }
 

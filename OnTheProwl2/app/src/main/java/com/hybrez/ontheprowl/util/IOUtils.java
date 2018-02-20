@@ -1,7 +1,9 @@
 package com.hybrez.ontheprowl.util;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StatFs;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,8 +25,11 @@ public class IOUtils {
      * directory
      */
     public enum Directory {
-        kInternal,
-        kExternal
+        kInternalOnly,
+        kExternalOnly,
+        kInternalExternal,
+        kExternalInternal,
+        kCache
     }
 
     /**
@@ -35,7 +40,6 @@ public class IOUtils {
      */
     public static boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
-
         return Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
 
@@ -49,9 +53,7 @@ public class IOUtils {
      */
     public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
-
         return Environment.MEDIA_MOUNTED.equals(state);
-
     }
 
     /**
@@ -83,10 +85,19 @@ public class IOUtils {
      * @return The file object of the directory
      */
     public static File getStorageDirectory(Context context, Directory dir) {
-        if (dir == Directory.kInternal)
-            return context.getFilesDir();
-        else if (dir == Directory.kInternal)
-            return context.getExternalFilesDir(null);
+        switch(dir) {
+            case kInternalOnly:
+                return context.getFilesDir();
+            case kInternalExternal:
+                if (checkAvailableInternalMemory()) return context.getFilesDir();
+            case kExternalOnly:
+                return context.getExternalFilesDir(null);
+            case kExternalInternal:
+                if (isExternalStorageWritable()) return context.getExternalFilesDir(null);
+                else return context.getFilesDir();
+            case kCache:
+                return context.getCacheDir();
+        }
 
         return null;
     }
@@ -218,6 +229,33 @@ public class IOUtils {
      */
     public static String read(Context context, Directory dir, String file) {
         return read(new File(getStorageDirectory(context, dir), file));
+    }
+
+    /**
+     * Check if at least 50 kb of internal memory is available
+     *
+     * @return True if internal storage available and
+     *         false otherwise
+     */
+    public static boolean checkAvailableInternalMemory() {
+        // init variables
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize, availableBlocks;
+
+        // get available space
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            blockSize = stat.getBlockSizeLong();
+            availableBlocks = stat.getAvailableBlocksLong();
+        } else {
+            blockSize = stat.getBlockSize();
+            availableBlocks = stat.getAvailableBlocks();
+        }
+
+        // compute available space
+        long bytes = availableBlocks * blockSize;
+
+        return bytes >= 50000;
     }
 
 }

@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,11 +14,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hybrez.ontheprowl.Constants;
 import com.hybrez.ontheprowl.R;
+import com.hybrez.ontheprowl.SharedMap;
 import com.hybrez.ontheprowl.TheBlueAllianceService;
 import com.hybrez.ontheprowl.controller.ConfigManager;
 import com.hybrez.ontheprowl.model.Event;
+import com.hybrez.ontheprowl.util.IOUtils;
+import com.hybrez.ontheprowl.util.JSONUtil;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,6 +48,9 @@ public class EventPreference extends Preference implements Callback<List<Event>>
     /** FRC Season set by user */
     private String mSeason;
 
+    /** Spinner in the preference */
+    private AppCompatSpinner mSpinner;
+
     /** List of events */
     private List<Event> mEvents;
 
@@ -63,9 +71,6 @@ public class EventPreference extends Preference implements Callback<List<Event>>
         // check if user has set other settings
         if (mNumber.length() < 1 || mSeason.length() != 4)
             setSummary(getContext().getString(R.string.pref_number_season_not_set));
-
-        // get events from cache or TBA
-        getEvents();
     }
 
     /**
@@ -78,10 +83,10 @@ public class EventPreference extends Preference implements Callback<List<Event>>
         super.onBindView(view);
 
         // init spinner and set its values
-        final AppCompatSpinner spinner = (AppCompatSpinner) view.findViewById(R.id.spinner_event);
-        spinner.setAdapter(new EventAdapter(getContext(), android.R.layout.simple_spinner_item,
+        mSpinner = (AppCompatSpinner) view.findViewById(R.id.spinner_event);
+        mSpinner.setAdapter(new EventAdapter(getContext(), android.R.layout.simple_spinner_item,
                 mEvents));
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Get event and save event key
@@ -95,10 +100,14 @@ public class EventPreference extends Preference implements Callback<List<Event>>
 
             }
         });
+
+        // get events from cache or TBA
+        getEvents();
     }
 
     @Override
     public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+        // get the events
         List<Event> events = response.body();
         Collections.sort(events, new Comparator<Event>() {
             @Override
@@ -106,12 +115,18 @@ public class EventPreference extends Preference implements Callback<List<Event>>
                 return event1.getName().compareTo(event2.getName());
             }
         });
+        ((EventAdapter) mSpinner.getAdapter()).notifyDataSetChanged();
+
+        // save events
+        String file = SharedMap.getInstance(getContext())
+                .getEventCachePath(mNumber, mSeason);
+        JSONUtil.write(file, events);
     }
 
     @Override
     public void onFailure(Call<List<Event>> call, Throwable t) {
-//        Snackbar.make(, getContext().getString(R.string.download_failure),
-//                Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mSpinner, getContext().getString(R.string.download_failure),
+                Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -184,15 +199,13 @@ public class EventPreference extends Preference implements Callback<List<Event>>
      * @return Whether or not file exists
      */
     private boolean addTeamsFromStorage() {
-        boolean fileExists = IOUtils.isFileExisting(this, SharedMap.TBA_DATA_DIR, getFileName());
+        String file = SharedMap.getInstance(getContext())
+                .getEventCachePath(mNumber, mSeason);
+        boolean fileExists = IOUtils.doesFileExist(file);
 
-        if (fileExists && eventInfo != null) {
-            Gson gson = new Gson();
-            String json = IOUtils.readStringFromFile(this, SharedMap.TBA_DATA_DIR, getFileName());
-            List<Event> events = gson.fromJson(json, new TypeToken<List<Event>>() {}.getType());
-            EventAdapter adapter = new EventAdapter(this,
-                    android.R.layout.simple_dropdown_item_1line, events);
-            eventInfo.setAdapter(adapter);
+        if (fileExists && mSpinner != null) {
+            List<Event> events = JSONUtil.read(file);
+            ((EventAdapter) mSpinner.getAdapter()).notifyDataSetChanged();
         }
 
         return fileExists;
