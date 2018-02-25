@@ -12,16 +12,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import com.hybrez.ontheprowl.Constants;
-import org.technowolves.ontheprowl.R;
+import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.SharedMap;
 import com.hybrez.ontheprowl.TeamAdapter;
 import com.hybrez.ontheprowl.TheBlueAllianceService;
+import com.hybrez.ontheprowl.controller.ConfigManager;
 import com.hybrez.ontheprowl.model.team.Team;
 import com.hybrez.ontheprowl.util.IOUtils;
+import com.hybrez.ontheprowl.util.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,31 +81,17 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Tea
             }
         });
 
-        // set on swipe-to-refresh listener
+        // Update listview with teams
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // TODO: Update listview with correct teams
+                getTeams();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        // add teams from a stored file or get from TBA
-        if (!addTeamsFromStorage()) {
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .build();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.TBA_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
-                    .build();
-
-            TheBlueAllianceService tbaService = retrofit.create(TheBlueAllianceService.class);
-            // TODO: Add event key
-            Call<List<Team>> call = tbaService.listTeams("2017ncgre", Constants.TBA_AUTH_KEY);
-            call.enqueue(this);
-        }
+        // get teams
+        getTeams();
     }
 
     @Override
@@ -115,9 +100,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Tea
         TeamAdapter adapter = (TeamAdapter) mListView.getAdapter();
         adapter.clear();
 
-        Log.e("Main Acitivty", response.toString());
-
-        // compare lists to see if equal
+        // sort the list by number
         List<Team> teams = response.body();
         Collections.sort(teams, new Comparator<Team>() {
             @Override
@@ -141,23 +124,42 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Tea
     }
 
     /**
+     * Check if teams are stored in data. If not,
+     * get the teams from The Blue Alliance.
+     */
+    private void getTeams() {
+        // add teams from a stored file or get from TBA
+        if (!addTeamsFromStorage()) {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .build();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Constants.TBA_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build();
+
+            TheBlueAllianceService service = retrofit.create(TheBlueAllianceService.class);
+            Call<List<Team>> call = service.listTeams("2017ncgre", Constants.TBA_AUTH_KEY);
+            call.enqueue(this);
+        }
+    }
+
+    /**
      * Add teams from a file if stored
      * on previous use of app
      *
      * @return Whether or not file exists
      */
     private boolean addTeamsFromStorage() {
-        // TODO Parse files more efficiently than appending into string
-        boolean fileExists = IOUtils.doesFileExist(this,
-                SharedMap.TBA_DATA_DIR, getFileName());
+        String file = SharedMap.getInstance(this)
+                .getTeamDataPath(ConfigManager.getEvent(this));
+        boolean fileExists = IOUtils.doesFileExist(file);
 
         // checks whether file exists
         if (fileExists) {
             // parse the JSON in the file
-            Gson gson = new Gson();
-            String json = IOUtils.read(this,
-                    SharedMap.TBA_DATA_DIR, getFileName());
-            List<Team> teams = gson.fromJson(json, new TypeToken<List<Team>>() {}.getType());
+            List<Team> teams = JSONUtil.read(file);
 
             // add the teams in the file to the adapter
             TeamAdapter adapter = (TeamAdapter) mListView.getAdapter();
@@ -167,22 +169,6 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Tea
         }
 
         return fileExists;
-    }
-
-    /**
-     * Get the filename of the data file
-     * based on the chosen event
-     *
-     * @return The filename
-     */
-    private String getFileName() {
-        SharedPreferences manager = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // get the file name
-        String filename = ""; // manager.getString(SettingsActivity.EVENT_KEY, "2017ncral");
-        filename += "_teams.json";
-
-        return filename;
     }
 
 }
