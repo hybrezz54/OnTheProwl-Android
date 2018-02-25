@@ -232,7 +232,7 @@ public class IOUtils {
     }
 
     /**
-     * Check if at least 50 kb of internal memory is available
+     * Check if at least 1 MB of internal memory is available
      *
      * @return True if internal storage available and
      *         false otherwise
@@ -255,7 +255,7 @@ public class IOUtils {
         // compute available space
         long bytes = availableBlocks * blockSize;
 
-        return bytes >= 50000;
+        return bytes >= (1000000);
     }
 
 }

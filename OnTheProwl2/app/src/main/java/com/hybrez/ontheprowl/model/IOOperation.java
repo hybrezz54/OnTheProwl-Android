@@ -2,8 +2,6 @@ package com.hybrez.ontheprowl.model;
 
 import android.content.Context;
 
-import com.hybrez.ontheprowl.util.Data;
-
 import java.util.List;
 
 /**

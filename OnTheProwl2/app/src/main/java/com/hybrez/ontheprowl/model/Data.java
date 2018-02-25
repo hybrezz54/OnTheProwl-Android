@@ -1,7 +1,8 @@
-package com.hybrez.ontheprowl.util;
+package com.hybrez.ontheprowl.model;
 
 import android.content.Context;
 
+import com.hybrez.ontheprowl.util.IOUtils;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 
 import java.io.File;

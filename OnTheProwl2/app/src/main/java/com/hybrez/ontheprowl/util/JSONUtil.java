@@ -3,6 +3,7 @@ package com.hybrez.ontheprowl.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.hybrez.ontheprowl.model.Data;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,15 +31,15 @@ public class JSONUtil {
      * @return The JSON data stored in a list of objects. Returns
      *         null if the file was not read successfully.
      */
-    public static List<? extends Data> read(File file) {
-        List<? extends Data> data = null;
+    public static <T> List<T> read(File file) {
+        List<T> data = null;
         Gson gson = new Gson();
         BufferedReader reader = null;
 
         try {
             // init variables
             reader = new BufferedReader(new FileReader(file));
-            Type type = new TypeToken<List<? extends Data>>() {}.getType();
+            Type type = new TypeToken<List<T>>() {}.getType();
 
             // read into list
             data = gson.fromJson(reader, type);
@@ -65,7 +66,7 @@ public class JSONUtil {
      * @return The JSON data stored in a list of objects. Returns
      *         null if the file was not read successfully.
      */
-    public static List<? extends Data> read(String file) {
+    public static <T> List<T> read(String file) {
         return read(new File(file));
     }
 
@@ -78,7 +79,7 @@ public class JSONUtil {
      * @return True if the data was written successfully and
      * false otherwise
      */
-    public static boolean write(File file, List<? extends Data> data) {
+    public static <T> boolean write(File file, List<T> data) {
         // init variables
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(data);
@@ -116,7 +117,7 @@ public class JSONUtil {
      * @return True if the data was written successfully and
      * false otherwise
      */
-    public static boolean write(String file, List<? extends Data> data) {
+    public static <T> boolean write(String file, List<T> data) {
         return write(new File(file), data);
     }
 

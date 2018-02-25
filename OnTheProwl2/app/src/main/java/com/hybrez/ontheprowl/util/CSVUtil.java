@@ -1,5 +1,6 @@
 package com.hybrez.ontheprowl.util;
 
+import com.hybrez.ontheprowl.model.Data;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
@@ -32,8 +33,8 @@ public class CSVUtil {
      * @return The CSV data stored in a list of objects. Returns
      *         null if the file was not read successfully.
      */
-    public static List<? extends Data> read(File file, Class<? extends Data> type) {
-        List<? extends Data> data = null;
+    public static <T> List<T> read(File file, Class<T> type) {
+        List<T> data = null;
         BufferedReader reader = null;
 
         try {
@@ -71,7 +72,7 @@ public class CSVUtil {
      * @return The CSV data stored in a list of objects. Returns
      *         null if the file was not read successfully.
      */
-    public static List<? extends Data> read(String file, Class<? extends Data> type) {
+    public static <T> List<T> read(String file, Class<T> type) {
         return read(new File(file), type);
     }
 
@@ -124,7 +125,7 @@ public class CSVUtil {
      * @return True if the data was written successfully and
      * false otherwise
      */
-    public static boolean write(String file, List<? extends Data> data) {
+    public static <T> boolean write(String file, List<T> data) {
         BufferedWriter writer = null;
 
         try {

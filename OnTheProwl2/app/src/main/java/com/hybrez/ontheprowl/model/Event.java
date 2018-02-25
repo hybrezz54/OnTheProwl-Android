@@ -2,8 +2,6 @@ package com.hybrez.ontheprowl.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.hybrez.ontheprowl.util.Data;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
 
 /**
  * The model for an Event
