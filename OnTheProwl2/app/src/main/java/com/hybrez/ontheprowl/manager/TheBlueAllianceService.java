@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl;
+package com.hybrez.ontheprowl.manager;
 
 import com.hybrez.ontheprowl.model.District;
 import com.hybrez.ontheprowl.model.Event;

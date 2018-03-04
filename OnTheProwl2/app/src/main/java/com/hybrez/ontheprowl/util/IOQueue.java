@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl;
+package com.hybrez.ontheprowl.util;
 
 import com.hybrez.ontheprowl.model.IOOperation;
 

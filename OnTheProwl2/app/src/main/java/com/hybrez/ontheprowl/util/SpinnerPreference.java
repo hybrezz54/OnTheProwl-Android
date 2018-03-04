@@ -3,35 +3,24 @@ package com.hybrez.ontheprowl.util;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.Preference;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.hybrez.ontheprowl.Constants;
 import com.hybrez.ontheprowl.R;
-import com.hybrez.ontheprowl.SharedMap;
-import com.hybrez.ontheprowl.TheBlueAllianceService;
-import com.hybrez.ontheprowl.ConfigManager;
+import com.hybrez.ontheprowl.manager.SharedMap;
+import com.hybrez.ontheprowl.manager.TheBlueAllianceService;
+import com.hybrez.ontheprowl.manager.ConfigManager;
 import com.hybrez.ontheprowl.model.Event;
 import com.hybrez.ontheprowl.util.io.IOUtils;
 import com.hybrez.ontheprowl.util.io.JSONUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

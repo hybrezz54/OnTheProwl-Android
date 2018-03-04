@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl.view.activity;
+package com.hybrez.ontheprowl.team.view;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,8 +11,6 @@ import android.view.MenuItem;
 
 import com.hybrez.ontheprowl.Constants;
 import com.hybrez.ontheprowl.R;
-import com.hybrez.ontheprowl.view.fragment.InfoFragment;
-import com.hybrez.ontheprowl.view.fragment.RobotFragment;
 import com.hybrez.ontheprowl.model.team.Team;
 
 public class TeamActivity extends AppCompatActivity implements

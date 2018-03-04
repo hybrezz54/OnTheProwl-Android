@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl.view.fragment;
+package com.hybrez.ontheprowl.team.view;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,22 +13,24 @@ import com.hybrez.ontheprowl.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnFragmentInteractionListener} interface
+ * {@link InfoFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link RobotFragment#newInstance} factory method to
+ * Use the {@link InfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RobotFragment extends Fragment {
+public class InfoFragment extends Fragment {
     /** Keys to get data from the bundle */
+    private static final String ARG_NAME = "team_name";
     private static final String ARG_NUMBER = "team_number";
 
-    /** Team number */
+    /** Team info */
+    private String mName;
     private String mNumber;
 
-    /** Callback interface for activity */
+    /** Callback interface for Activity */
     private OnFragmentInteractionListener mListener;
 
-    public RobotFragment() {
+    public InfoFragment() {
         // Required empty public constructor
     }
 
@@ -36,12 +38,14 @@ public class RobotFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
+     * @param name The team's name
      * @param number The team's number
      * @return A new instance of fragment InfoFragment.
      */
-    public static RobotFragment newInstance(String number) {
-        RobotFragment fragment = new RobotFragment();
+    public static InfoFragment newInstance(String name, String number) {
+        InfoFragment fragment = new InfoFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_NAME, name);
         args.putString(ARG_NUMBER, number);
         fragment.setArguments(args);
         return fragment;
@@ -51,22 +55,24 @@ public class RobotFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Extract team number
-        if (getArguments() != null)
+        // Extract team info
+        if (getArguments() != null) {
+            mName = getArguments().getString(ARG_NAME);
             mNumber = getArguments().getString(ARG_NUMBER);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_robot, container, false);
+        return inflater.inflate(R.layout.fragment_info, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onRobotInteraction(uri);
+            mListener.onInfoInteraction(uri);
         }
     }
 
@@ -99,6 +105,6 @@ public class RobotFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onRobotInteraction(Uri uri);
+        void onInfoInteraction(Uri uri);
     }
 }

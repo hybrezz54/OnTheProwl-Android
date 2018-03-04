@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl;
+package com.hybrez.ontheprowl.team;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.model.team.Team;
 
 import java.util.ArrayList;

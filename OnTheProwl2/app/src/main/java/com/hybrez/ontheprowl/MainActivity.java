@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl.view.activity;
+package com.hybrez.ontheprowl;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
@@ -10,13 +10,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.hybrez.ontheprowl.Constants;
-import com.hybrez.ontheprowl.R;
-import com.hybrez.ontheprowl.SharedMap;
-import com.hybrez.ontheprowl.TeamAdapter;
-import com.hybrez.ontheprowl.TheBlueAllianceService;
-import com.hybrez.ontheprowl.ConfigManager;
+import com.hybrez.ontheprowl.manager.ConfigManager;
+import com.hybrez.ontheprowl.manager.SharedMap;
+import com.hybrez.ontheprowl.manager.TheBlueAllianceService;
 import com.hybrez.ontheprowl.model.team.Team;
+import com.hybrez.ontheprowl.team.TeamAdapter;
+import com.hybrez.ontheprowl.team.view.TeamActivity;
 import com.hybrez.ontheprowl.util.io.IOUtils;
 import com.hybrez.ontheprowl.util.io.JSONUtil;
 

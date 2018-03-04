@@ -6,4 +6,5 @@
     <dimen name="list_item_padding">8dp</dimen>
 
     <dimen name="data_button_margin">5dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

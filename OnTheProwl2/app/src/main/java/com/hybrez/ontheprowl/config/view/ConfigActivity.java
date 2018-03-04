@@ -18,9 +18,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.hybrez.ontheprowl.ConfigManager;
+import com.hybrez.ontheprowl.manager.ConfigManager;
 import com.hybrez.ontheprowl.R;
-import com.hybrez.ontheprowl.SharedMap;
+import com.hybrez.ontheprowl.manager.SharedMap;
 import com.hybrez.ontheprowl.model.Event;
 import com.hybrez.ontheprowl.util.SpinnerPreference;
 import com.hybrez.ontheprowl.util.io.JSONUtil;
