@@ -61,7 +61,19 @@ public class SharedMap {
      */
     public String getEventCachePath(String number, String season) {
         return IOUtils.getStorageDirectory(context, IOUtils.Directory.kCache)
-                + "_" + number + "_" + season + ".json";
+                + "/event_" + number + "_" + season + ".json";
+    }
+
+    /**
+     * Get the file path to store the team data downloaded both from
+     * The Blue Alliance and stored by the user
+     *
+     * @param event The key of the event
+     * @return The path to store the team data
+     */
+    public String getTeamDataPath(String event) {
+        return IOUtils.getStorageDirectory(context, IOUtils.Directory.kExternalInternal)
+                + "/data/teams_" + event + ".json";
     }
 
 }

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +25,7 @@ import com.hybrez.ontheprowl.model.Event;
 import com.hybrez.ontheprowl.util.IOUtils;
 import com.hybrez.ontheprowl.util.JSONUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -50,9 +52,6 @@ public class EventPreference extends Preference implements Callback<List<Event>>
 
     /** Spinner in the preference */
     private AppCompatSpinner mSpinner;
-
-    /** List of events */
-    private List<Event> mEvents;
 
     /**
      * Construct a new EventPreference object
@@ -84,13 +83,14 @@ public class EventPreference extends Preference implements Callback<List<Event>>
 
         // init spinner and set its values
         mSpinner = (AppCompatSpinner) view.findViewById(R.id.spinner_event);
-        mSpinner.setAdapter(new EventAdapter(getContext(), android.R.layout.simple_spinner_item,
-                mEvents));
+        final EventAdapter adapter = new EventAdapter(getContext(), android.R.layout.simple_spinner_item,
+                new ArrayList<Event>());
+        mSpinner.setAdapter(adapter);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Get event and save event key
-                Event event = mEvents.get(position);
+                Event event = adapter.getItem(position);
                 ConfigManager.setEvent(getContext(), event.getKey());
                 setSummary(event.getName());
             }
@@ -152,12 +152,13 @@ public class EventPreference extends Preference implements Callback<List<Event>>
      * Returns the index of the given value in the list of events
      *
      * @param value The value whose index should be returned.
+     * @param events The list of events to seach in
      * @return The index of the value, or -1 if not found.
      */
-    public int findIndexOfValue(String value) {
-        if (value != null && mEvents != null) {
-            for (int i = mEvents.size() - 1; i >= 0; i--) {
-                if (mEvents.get(i).getName().equals(value)) {
+    public int findIndexOfValue(String value, List<Event> events) {
+        if (value != null && events != null) {
+            for (int i = events.size() - 1; i >= 0; i--) {
+                if (events.get(i).getName().equals(value)) {
                     return i;
                 }
             }
@@ -171,7 +172,12 @@ public class EventPreference extends Preference implements Callback<List<Event>>
      * @return The list of events
      */
     public List<Event> getEntries() {
-        return mEvents;
+        if (mSpinner != null) {
+            EventAdapter adapter = (EventAdapter) mSpinner.getAdapter();
+            return adapter.events;
+        }
+
+        return null;
     }
 
     /**
@@ -205,7 +211,10 @@ public class EventPreference extends Preference implements Callback<List<Event>>
 
         if (fileExists && mSpinner != null) {
             List<Event> events = JSONUtil.read(file);
-            ((EventAdapter) mSpinner.getAdapter()).notifyDataSetChanged();
+            EventAdapter adapter = ((EventAdapter) mSpinner.getAdapter());
+            adapter.clear();
+            adapter.addAll(events);
+            adapter.notifyDataSetChanged();
         }
 
         return fileExists;
@@ -250,10 +259,10 @@ public class EventPreference extends Preference implements Callback<List<Event>>
          *
          * @param context The application context
          * @param resource The view containing
-         * @param events
+         * @param events The list of events to add to the adapter
          */
-        public EventAdapter(Context context, int resource, List<Event> events) {
-            super(context,resource, events);
+        private EventAdapter(Context context, int resource, List<Event> events) {
+            super(context, resource, events);
             this.context = context;
             this.events = events;
         }
@@ -264,22 +273,23 @@ public class EventPreference extends Preference implements Callback<List<Event>>
          * @param position The position of element in the spinner dropdown
          * @param convertView The view to be used for each element
          * @param parent The ViewGroup the ConvertView belongs to
-         * @return
+         * @return The view of each item in the adapter
          */
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             // get the event object and init variables
             Event event = getItem(position);
-            TextView name;
 
             // find text view or create one
-            if (convertView == null)
-                name = new TextView(context);
-            else
-                name = (TextView) convertView.findViewById(android.R.id.text1);
+            if (convertView == null) {
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(android.R.layout.simple_spinner_item, parent,
+                        false);
+            }
 
             // set text view value
+            TextView name = (TextView) convertView.findViewById(android.R.id.text1);
             name.setText(event.getName());
 
             return convertView;

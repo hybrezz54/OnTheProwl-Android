@@ -29,7 +29,7 @@
             android:label="@string/title_activity_team" />
         <activity
             android:name=".view.activity.ConfigActivity"
-            android:label="@string/title_activity_config"></activity>
+            android:label="@string/title_activity_config" />
     </application>
 
 </manifest>

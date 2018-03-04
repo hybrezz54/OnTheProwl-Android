@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Tea
         Collections.sort(teams, new Comparator<Team>() {
             @Override
             public int compare(Team o1, Team o2) {
+                Log.e("MainActivity", o1.getNumber() + " " + o2.getNumber());
                 Integer team1 = Integer.parseInt(o1.getNumber());
                 Integer team2 = Integer.parseInt(o2.getNumber());
                 return team1.compareTo(team2);

@@ -59,7 +59,8 @@ public class ConfigActivity extends AppCompatPreferenceActivity {
                 // Look up the correct display value in the preference's
                 // event list
                 EventPreference eventPreference = (EventPreference) preference;
-                int index = eventPreference.findIndexOfValue(stringValue);
+                int index = eventPreference.findIndexOfValue(stringValue, eventPreference
+                        .getEntries());
 
                 // Set the summary to reflect the new value
                 preference.setSummary(
