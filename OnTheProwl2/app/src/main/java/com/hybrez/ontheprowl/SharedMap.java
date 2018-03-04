@@ -2,7 +2,7 @@ package com.hybrez.ontheprowl;
 
 import android.content.Context;
 
-import com.hybrez.ontheprowl.util.IOUtils;
+import com.hybrez.ontheprowl.util.io.IOUtils;
 
 /**
  * Class to map where all application data

@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl.util;
+package com.hybrez.ontheprowl.util.io;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

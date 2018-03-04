@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl.view.activity;
+package com.hybrez.ontheprowl.config.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -17,10 +18,20 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.hybrez.ontheprowl.ConfigManager;
 import com.hybrez.ontheprowl.R;
-import com.hybrez.ontheprowl.view.EventPreference;
+import com.hybrez.ontheprowl.SharedMap;
+import com.hybrez.ontheprowl.model.Event;
+import com.hybrez.ontheprowl.util.SpinnerPreference;
+import com.hybrez.ontheprowl.util.io.JSONUtil;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -33,7 +44,32 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class ConfigActivity extends AppCompatPreferenceActivity {
+public class ConfigActivity extends AppCompatPreferenceActivity implements Callback<List<Event>> {
+
+    /** Default event key */
+    private static final String DEFAULT_VALUE = "2017ncral";
+
+    /** Selected event key */
+    private String mEventKey;
+
+    /** Team number set by user */
+    private String mNumber;
+
+    /** FRC Season set by user */
+    private String mSeason;
+
+    /**
+     * Construct a new ConfigActivity class
+     */
+    public ConfigActivity() {
+        // retrieve team number set by user
+        mNumber = ConfigManager.getTeamNumber(this);
+        mSeason = ConfigManager.getSeason(this);
+
+        // check if user has set other settings
+        if (mNumber.length() < 1 || mSeason.length() != 4)
+            setSummary(getContext().getString(R.string.pref_number_season_not_set));
+    }
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -55,17 +91,17 @@ public class ConfigActivity extends AppCompatPreferenceActivity {
                         index >= 0
                                 ? listPreference.getEntries()[index]
                                 : null);
-            } else if (preference instanceof EventPreference) {
+            } else if (preference instanceof SpinnerPreference) {
                 // Look up the correct display value in the preference's
                 // event list
-                EventPreference eventPreference = (EventPreference) preference;
-                int index = eventPreference.findIndexOfValue(stringValue, eventPreference
+                SpinnerPreference spinnerPreference = (SpinnerPreference) preference;
+                int index = spinnerPreference.findIndexOfValue(stringValue, spinnerPreference
                         .getEntries());
 
                 // Set the summary to reflect the new value
                 preference.setSummary(
                         index >= 0
-                                ? eventPreference.getEntries().get(index).getName()
+                                ? spinnerPreference.getEntries().get(index).getName()
                                 : null);
             } else {
                 // For all other preferences, set the summary to the value's
@@ -179,6 +215,30 @@ public class ConfigActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+        // get the events
+        List<Event> events = response.body();
+        Collections.sort(events, new Comparator<Event>() {
+            @Override
+            public int compare(Event event1, Event event2) {
+                return event1.getName().compareTo(event2.getName());
+            }
+        });
+        ((SpinnerPreference.EventAdapter) mSpinner.getAdapter()).notifyDataSetChanged();
+
+        // save events
+        String file = SharedMap.getInstance(getContext())
+                .getEventCachePath(mNumber, mSeason);
+        JSONUtil.write(file, events);
+    }
+
+    @Override
+    public void onFailure(Call<List<Event>> call, Throwable t) {
+        Snackbar.make(getListView(), getString(R.string.download_failure),
+                Snackbar.LENGTH_LONG).show();
     }
 
     /**

@@ -15,7 +15,7 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_title_frc_season" />
 
-    <com.hybrez.ontheprowl.view.EventPreference
+    <com.hybrez.ontheprowl.util.SpinnerPreference
         android:layout="@layout/preference_events" />
 
     <EditTextPreference

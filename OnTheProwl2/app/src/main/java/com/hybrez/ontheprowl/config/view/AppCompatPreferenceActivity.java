@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl.view.activity;
+package com.hybrez.ontheprowl.config.view;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

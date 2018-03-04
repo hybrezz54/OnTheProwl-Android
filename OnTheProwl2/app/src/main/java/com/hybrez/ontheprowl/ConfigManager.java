@@ -1,4 +1,4 @@
-package com.hybrez.ontheprowl.controller;
+package com.hybrez.ontheprowl;
 
 import android.content.Context;
 import android.content.SharedPreferences;

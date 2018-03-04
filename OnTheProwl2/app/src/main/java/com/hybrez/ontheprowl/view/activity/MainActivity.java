@@ -1,8 +1,6 @@
 package com.hybrez.ontheprowl.view.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,10 +15,10 @@ import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.SharedMap;
 import com.hybrez.ontheprowl.TeamAdapter;
 import com.hybrez.ontheprowl.TheBlueAllianceService;
-import com.hybrez.ontheprowl.controller.ConfigManager;
+import com.hybrez.ontheprowl.ConfigManager;
 import com.hybrez.ontheprowl.model.team.Team;
-import com.hybrez.ontheprowl.util.IOUtils;
-import com.hybrez.ontheprowl.util.JSONUtil;
+import com.hybrez.ontheprowl.util.io.IOUtils;
+import com.hybrez.ontheprowl.util.io.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
