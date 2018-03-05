@@ -5,30 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
-import com.hybrez.com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.Constants;
-import com.hybrez.ontheprowl.MainActivity;
 import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.manager.ConfigManager;
 import com.hybrez.ontheprowl.manager.SharedMap;
 import com.hybrez.ontheprowl.manager.TheBlueAllianceService;
 import com.hybrez.ontheprowl.model.team.Team;
-import com.hybrez.ontheprowl.team.TeamAdapter;
 import com.hybrez.ontheprowl.team.TeamRecyclerViewAdapter;
-import com.hybrez.ontheprowl.team.dummy.DummyContent;
-import com.hybrez.ontheprowl.team.dummy.DummyContent.DummyItem;
 import com.hybrez.ontheprowl.util.io.IOUtils;
 import com.hybrez.ontheprowl.util.io.JSONUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -43,16 +37,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnTeamListInteractionListener}
  * interface.
+ *
+ * @author Hamzah Aslam
  */
 public class TeamFragment extends Fragment implements Callback<List<Team>> {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    /** Callback interface for the list view adapter to communicate */
+    private OnTeamListInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,13 +54,15 @@ public class TeamFragment extends Fragment implements Callback<List<Team>> {
     public TeamFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static TeamFragment newInstance(int columnCount) {
+    /**
+     * Get an instance of a TeamFragment
+     *
+     * @return A new instance of the fragment
+     */
+    public static TeamFragment newInstance() {
         TeamFragment fragment = new TeamFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -75,9 +70,9 @@ public class TeamFragment extends Fragment implements Callback<List<Team>> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+//        if (getArguments() != null) {
+//            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+//        }
     }
 
     @Override
@@ -89,28 +84,11 @@ public class TeamFragment extends Fragment implements Callback<List<Team>> {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new TeamRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            // TODO: get team list from viewmodel
+            recyclerView.setAdapter(new TeamRecyclerViewAdapter(new ArrayList<Team>(), mListener));
         }
-
-        // TODO: set list view on click listener
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // get the selected team object
-                Team team = (Team) mListView.getAdapter().getItem(position);
-
-                // Launch TeamActivity with team info
-                Intent intent = new Intent(MainActivity.this, TeamActivity.class);
-                intent.putExtra(Constants.TEAM_NAME, team.getInfo().getName());
-                intent.putExtra(Constants.TEAM_NUMBER, team.getNumber());
-                startActivity(intent);
-            }
-        });
 
         return view;
     }
@@ -119,11 +97,11 @@ public class TeamFragment extends Fragment implements Callback<List<Team>> {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnTeamListInteractionListener) {
+            mListener = (OnTeamListInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnTeamListInteractionListener");
         }
     }
 
@@ -143,9 +121,11 @@ public class TeamFragment extends Fragment implements Callback<List<Team>> {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+    public interface OnTeamListInteractionListener {
+
+        /** Called when user selects a team in the list view */
+        void onTeamItemInteraction(Team team);
+
     }
 
     @Override

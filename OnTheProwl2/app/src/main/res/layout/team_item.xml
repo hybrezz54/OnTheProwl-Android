@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="@dimen/list_item_padding">
 
@@ -16,18 +16,18 @@
             android:id="@+id/team_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Techno Wolves"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:fontFamily="sans-serif-thin" />
+            android:fontFamily="sans-serif-thin"
+            android:textAppearance="?attr/textAppearanceListItem"/>
 
         <TextView
             android:id="@+id/team_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="5518"
             android:textSize="22sp"
-            android:fontFamily="sans-serif-thin" />
+            android:fontFamily="sans-serif-thin"
+            android:textAppearance="?attr/textAppearanceListItem"/>
 
     </LinearLayout>
 
