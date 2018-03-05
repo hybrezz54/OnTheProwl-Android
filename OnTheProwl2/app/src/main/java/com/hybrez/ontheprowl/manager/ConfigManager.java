@@ -10,6 +10,9 @@ import android.preference.PreferenceManager;
  */
 public class ConfigManager {
 
+    /** App initial launch preference key */
+    public static final String INITIAL_LAUNCH = "initial_launch";
+
     /** Team Number preference key */
     public static final String TEAM_NUMBER = "team_number";
 
@@ -18,6 +21,27 @@ public class ConfigManager {
 
     /** FRC event preference key */
     public static final String FRC_EVENT = "frc_event";
+
+    /**
+     * Get whether this launch of the app is the initial launch
+     *
+     * @param context The application context
+     * @return True if the application is launched for the first
+     *         time and false otherwise
+     */
+    public static boolean isInitialLaunch(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(INITIAL_LAUNCH, true);
+    }
+
+    /**
+     * Set not
+     * @param context
+     */
+    public static void setNotInitialLaunch(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putString(INITIAL_LAUNCH, false).apply();
+    }
 
     /**
      * Get the team number from settings
