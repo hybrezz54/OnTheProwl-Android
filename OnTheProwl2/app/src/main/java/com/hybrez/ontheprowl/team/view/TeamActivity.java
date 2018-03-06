@@ -74,7 +74,7 @@ public class TeamActivity extends AppCompatActivity implements
 
         // Add first shown fragment to activity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content, mInfoFrag)
+        ft.replace(R.id.content_team, mInfoFrag)
                 .commit();
 
         // Add listener to navigation bar

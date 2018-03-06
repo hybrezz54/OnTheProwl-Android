@@ -11,16 +11,16 @@ import android.preference.PreferenceManager;
 public class ConfigManager {
 
     /** App initial launch preference key */
-    public static final String INITIAL_LAUNCH = "initial_launch";
+    private static final String INITIAL_LAUNCH = "initial_launch";
 
     /** Team Number preference key */
-    public static final String TEAM_NUMBER = "team_number";
+    private static final String TEAM_NUMBER = "team_number";
 
     /** FRC Season preference key */
-    public static final String FRC_SEASON = "frc_season";
+    private static final String FRC_SEASON = "frc_season";
 
     /** FRC event preference key */
-    public static final String FRC_EVENT = "frc_event";
+    private static final String FRC_EVENT = "frc_event";
 
     /**
      * Get whether this launch of the app is the initial launch
@@ -40,7 +40,7 @@ public class ConfigManager {
      */
     public static void setNotInitialLaunch(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.edit().putString(INITIAL_LAUNCH, false).apply();
+        prefs.edit().putBoolean(INITIAL_LAUNCH, false).apply();
     }
 
     /**

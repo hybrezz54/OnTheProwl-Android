@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 
 import com.hybrez.ontheprowl.Constants;
 import com.hybrez.ontheprowl.R;
+import com.hybrez.ontheprowl.config.EventAdapter;
 import com.hybrez.ontheprowl.manager.SharedMap;
 import com.hybrez.ontheprowl.manager.TheBlueAllianceService;
 import com.hybrez.ontheprowl.manager.ConfigManager;
@@ -70,7 +71,7 @@ public class SpinnerPreference extends Preference {
         });
 
         // get events from cache or TBA
-        getEvents();
+        //getEvents();
     }
 
     @Override
@@ -88,9 +89,9 @@ public class SpinnerPreference extends Preference {
      *
      * @return True if other settings set and false otherwise
      */
-    public boolean isPreferenceDisabled() {
-        return (mNumber.length() < 1 || mSeason.length() != 4);
-    }
+//    public boolean isPreferenceDisabled() {
+//        return (mNumber.length() < 1 || mSeason.length() != 4);
+//    }
 
     /**
      * Returns the index of the given value in the list of events
@@ -116,10 +117,10 @@ public class SpinnerPreference extends Preference {
      * @return The list of events
      */
     public List<Event> getEntries() {
-        if (mSpinner != null) {
-            EventAdapter adapter = (EventAdapter) mSpinner.getAdapter();
-            return adapter.events;
-        }
+//        if (mSpinner != null) {
+//            EventAdapter adapter = (EventAdapter) mSpinner.getAdapter();
+//            return adapter.events;
+//        }
 
         return null;
     }
@@ -128,19 +129,19 @@ public class SpinnerPreference extends Preference {
      * Check if events are stored in cache. If not,
      * get the events from The Blue Alliance.
      */
-    private void getEvents() {
-        if (!addTeamsFromStorage()) {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.TBA_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            TheBlueAllianceService service = retrofit.create(TheBlueAllianceService.class);
-            Call<List<Event>> call = service.listEventsByTeam("frc" + mNumber,
-                    mSeason, Constants.TBA_AUTH_KEY);
-            call.enqueue(this);
-        }
-    }
+//    private void getEvents() {
+//        if (!addTeamsFromStorage()) {
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl(Constants.TBA_BASE_URL)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
+//
+//            TheBlueAllianceService service = retrofit.create(TheBlueAllianceService.class);
+//            Call<List<Event>> call = service.listEventsByTeam("frc" + mNumber,
+//                    mSeason, Constants.TBA_AUTH_KEY);
+//            call.enqueue(this);
+//        }
+//    }
 
     /**
      * Add events from a file if
@@ -148,21 +149,21 @@ public class SpinnerPreference extends Preference {
      *
      * @return Whether or not file exists
      */
-    private boolean addTeamsFromStorage() {
-        String file = SharedMap.getInstance(getContext())
-                .getEventCachePath(mNumber, mSeason);
-        boolean fileExists = IOUtils.doesFileExist(file);
-
-        if (fileExists && mSpinner != null) {
-            List<Event> events = JSONUtil.read(file);
-            EventAdapter adapter = ((EventAdapter) mSpinner.getAdapter());
-            adapter.clear();
-            adapter.addAll(events);
-            adapter.notifyDataSetChanged();
-        }
-
-        return fileExists;
-    }
+//    private boolean addTeamsFromStorage() {
+//        String file = SharedMap.getInstance(getContext())
+//                .getEventCachePath(mNumber, mSeason);
+//        boolean fileExists = IOUtils.doesFileExist(file);
+//
+//        if (fileExists && mSpinner != null) {
+//            List<Event> events = JSONUtil.read(file);
+//            EventAdapter adapter = ((EventAdapter) mSpinner.getAdapter());
+//            adapter.clear();
+//            adapter.addAll(events);
+//            adapter.notifyDataSetChanged();
+//        }
+//
+//        return fileExists;
+//    }
 
     /**
      * Get the filename of the data file

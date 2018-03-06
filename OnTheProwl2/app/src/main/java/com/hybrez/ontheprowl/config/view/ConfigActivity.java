@@ -67,8 +67,8 @@ public class ConfigActivity extends AppCompatPreferenceActivity implements Callb
         mSeason = ConfigManager.getSeason(this);
 
         // check if user has set other settings
-        if (mNumber.length() < 1 || mSeason.length() != 4)
-            setSummary(getContext().getString(R.string.pref_number_season_not_set));
+//        if (mNumber.length() < 1 || mSeason.length() != 4)
+//            setSummary(getString(R.string.pref_number_season_not_set));
     }
 
     /**
@@ -227,11 +227,10 @@ public class ConfigActivity extends AppCompatPreferenceActivity implements Callb
                 return event1.getName().compareTo(event2.getName());
             }
         });
-        ((SpinnerPreference.EventAdapter) mSpinner.getAdapter()).notifyDataSetChanged();
+//        ((SpinnerPreference.EventAdapter) mSpinner.getAdapter()).notifyDataSetChanged();
 
         // save events
-        String file = SharedMap.getInstance(getContext())
-                .getEventCachePath(mNumber, mSeason);
+        String file = SharedMap.getInstance(this).getEventCachePath(mNumber, mSeason);
         JSONUtil.write(file, events);
     }
 

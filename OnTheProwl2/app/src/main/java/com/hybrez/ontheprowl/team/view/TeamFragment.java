@@ -131,54 +131,54 @@ public class TeamFragment extends Fragment implements Callback<List<Team>> {
     @Override
     public void onResponse(Call<List<Team>> call, Response<List<Team>> response) {
         // clear the adapter for new list
-        TeamAdapter adapter = (TeamAdapter) mListView.getAdapter();
-        adapter.clear();
-
-        // sort the list by number
-        List<Team> teams = response.body();
-        Collections.sort(teams, new Comparator<Team>() {
-            @Override
-            public int compare(Team o1, Team o2) {
-                Log.e("MainActivity", o1.getNumber() + " " + o2.getNumber());
-                Integer team1 = Integer.parseInt(o1.getNumber());
-                Integer team2 = Integer.parseInt(o2.getNumber());
-                return team1.compareTo(team2);
-            }
-        });
-
-        // add teams to list adapter
-        adapter.addAll(teams);
-        adapter.notifyDataSetChanged();
+//        TeamAdapter adapter = (TeamAdapter) mListView.getAdapter();
+//        adapter.clear();
+//
+//        // sort the list by number
+//        List<Team> teams = response.body();
+//        Collections.sort(teams, new Comparator<Team>() {
+//            @Override
+//            public int compare(Team o1, Team o2) {
+//                Log.e("MainActivity", o1.getNumber() + " " + o2.getNumber());
+//                Integer team1 = Integer.parseInt(o1.getNumber());
+//                Integer team2 = Integer.parseInt(o2.getNumber());
+//                return team1.compareTo(team2);
+//            }
+//        });
+//
+//        // add teams to list adapter
+//        adapter.addAll(teams);
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onFailure(Call<List<Team>> call, Throwable t) {
         // Show a failure message to the user
-        Snackbar.make(mListView, getString(R.string.download_failure),
-                Snackbar.LENGTH_LONG).show();
+//        Snackbar.make(mListView, getString(R.string.download_failure),
+//                Snackbar.LENGTH_LONG).show();
     }
 
     /**
      * Check if teams are stored in data. If not,
      * get the teams from The Blue Alliance.
      */
-    private void getTeams() {
-        // add teams from a stored file or get from TBA
-        if (!addTeamsFromStorage()) {
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .build();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.TBA_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
-                    .build();
-
-            TheBlueAllianceService service = retrofit.create(TheBlueAllianceService.class);
-            Call<List<Team>> call = service.listTeams("2017ncgre", Constants.TBA_AUTH_KEY);
-            call.enqueue(this);
-        }
-    }
+//    private void getTeams() {
+//        // add teams from a stored file or get from TBA
+//        if (!addTeamsFromStorage()) {
+//            OkHttpClient client = new OkHttpClient.Builder()
+//                    .build();
+//
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl(Constants.TBA_BASE_URL)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .client(client)
+//                    .build();
+//
+//            TheBlueAllianceService service = retrofit.create(TheBlueAllianceService.class);
+//            Call<List<Team>> call = service.listTeams("2017ncgre", Constants.TBA_AUTH_KEY);
+//            call.enqueue(this);
+//        }
+//    }
 
     /**
      * Add teams from a file if stored
@@ -186,24 +186,24 @@ public class TeamFragment extends Fragment implements Callback<List<Team>> {
      *
      * @return Whether or not file exists
      */
-    private boolean addTeamsFromStorage() {
-        String file = SharedMap.getInstance(this)
-                .getTeamDataPath(ConfigManager.getEvent(this));
-        boolean fileExists = IOUtils.doesFileExist(file);
-
-        // checks whether file exists
-        if (fileExists) {
-            // parse the JSON in the file
-            List<Team> teams = JSONUtil.read(file);
-
-            // add the teams in the file to the adapter
-            TeamAdapter adapter = (TeamAdapter) mListView.getAdapter();
-            adapter.clear();
-            adapter.addAll(teams);
-            adapter.notifyDataSetChanged();
-        }
-
-        return fileExists;
-    }
+//    private boolean addTeamsFromStorage() {
+//        String file = SharedMap.getInstance(this)
+//                .getTeamDataPath(ConfigManager.getEvent(this));
+//        boolean fileExists = IOUtils.doesFileExist(file);
+//
+//        // checks whether file exists
+//        if (fileExists) {
+//            // parse the JSON in the file
+//            List<Team> teams = JSONUtil.read(file);
+//
+//            // add the teams in the file to the adapter
+//            TeamAdapter adapter = (TeamAdapter) mListView.getAdapter();
+//            adapter.clear();
+//            adapter.addAll(teams);
+//            adapter.notifyDataSetChanged();
+//        }
+//
+//        return fileExists;
+//    }
 
 }
