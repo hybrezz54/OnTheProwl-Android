@@ -30,6 +30,8 @@ public class Team {
      */
     public Team(String number) {
         this.number = number;
+        setInfo(new Info());
+        setRobot(new Robot());
     }
 
     /**

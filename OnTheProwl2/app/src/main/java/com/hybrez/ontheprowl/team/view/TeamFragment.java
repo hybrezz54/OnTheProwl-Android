@@ -86,8 +86,15 @@ public class TeamFragment extends Fragment implements Callback<List<Team>> {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
+            // Debugging purposes
+            Team team = new Team("5518");
+            team.getInfo().setName("Techno Pups");
+            ArrayList<Team> teams = new ArrayList<>();
+            teams.add(team);
+            teams.add(team);
+
             // TODO: get team list from viewmodel
-            recyclerView.setAdapter(new TeamRecyclerViewAdapter(new ArrayList<Team>(), mListener));
+            recyclerView.setAdapter(new TeamRecyclerViewAdapter(teams, mListener));
         }
 
         return view;

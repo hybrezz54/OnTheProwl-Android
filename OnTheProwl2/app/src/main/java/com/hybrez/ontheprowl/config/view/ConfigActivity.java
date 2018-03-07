@@ -18,11 +18,15 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.hybrez.ontheprowl.Constants;
+import com.hybrez.ontheprowl.config.EventAdapter;
 import com.hybrez.ontheprowl.manager.ConfigManager;
 import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.manager.SharedMap;
+import com.hybrez.ontheprowl.manager.TheBlueAllianceService;
 import com.hybrez.ontheprowl.model.Event;
 import com.hybrez.ontheprowl.util.SpinnerPreference;
+import com.hybrez.ontheprowl.util.io.IOUtils;
 import com.hybrez.ontheprowl.util.io.JSONUtil;
 
 import java.util.Collections;
@@ -32,6 +36,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -68,7 +74,6 @@ public class ConfigActivity extends AppCompatPreferenceActivity implements Callb
 
         // check if user has set other settings
 //        if (mNumber.length() < 1 || mSeason.length() != 4)
-//            setSummary(getString(R.string.pref_number_season_not_set));
     }
 
     /**
@@ -92,22 +97,13 @@ public class ConfigActivity extends AppCompatPreferenceActivity implements Callb
                                 ? listPreference.getEntries()[index]
                                 : null);
             } else if (preference instanceof SpinnerPreference) {
-                // Look up the correct display value in the preference's
-                // event list
-                SpinnerPreference spinnerPreference = (SpinnerPreference) preference;
-                int index = spinnerPreference.findIndexOfValue(stringValue, spinnerPreference
-                        .getEntries());
-
-                // Set the summary to reflect the new value
-                preference.setSummary(
-                        index >= 0
-                                ? spinnerPreference.getEntries().get(index).getName()
-                                : null);
+                // Don't update anything
             } else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
+
             return true;
         }
     };
@@ -203,6 +199,7 @@ public class ConfigActivity extends AppCompatPreferenceActivity implements Callb
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("team_number"));
             bindPreferenceSummaryToValue(findPreference("frc_season"));
+            bindPreferenceSummaryToValue(findPreference("frc_event"));
             bindPreferenceSummaryToValue(findPreference("server_url"));
         }
 
@@ -295,6 +292,65 @@ public class ConfigActivity extends AppCompatPreferenceActivity implements Callb
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    /**
+     * Check if events are stored in cache. If not,
+     * get the events from The Blue Alliance.
+     */
+    private void getEvents() {
+        if (!addTeamsFromStorage()) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Constants.TBA_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            TheBlueAllianceService service = retrofit.create(TheBlueAllianceService.class);
+            Call<List<Event>> call = service.listEventsByTeam("frc" + mNumber,
+                    mSeason, Constants.TBA_AUTH_KEY);
+            call.enqueue(this);
+        }
+    }
+
+    /**
+     * Add events from a file if
+     * stored on previous use of app
+     *
+     * @return Whether or not file exists
+     */
+    private boolean addTeamsFromStorage() {
+        String file = SharedMap.getInstance(this)
+                .getEventCachePath(mNumber, mSeason);
+        boolean fileExists = IOUtils.doesFileExist(file);
+
+        if (fileExists) {
+            List<Event> events = JSONUtil.read(file);
+            // TODO: update spinnerpreference's adapter
+//            EventAdapter adapter = ((EventAdapter) mSpinner.getAdapter());
+//            adapter.clear();
+//            adapter.addAll(events);
+//            adapter.notifyDataSetChanged();
+        }
+
+        return fileExists;
+    }
+
+    /**
+     * Returns the index of the given value in the list of events
+     *
+     * @param value The value whose index should be returned.
+     * @param events The list of events to seach in
+     * @return The index of the value, or -1 if not found.
+     */
+    public int findIndexOfValue(String value, List<Event> events) {
+        if (value != null && events != null) {
+            for (int i = events.size() - 1; i >= 0; i--) {
+                if (events.get(i).getName().equals(value)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
 }

@@ -44,6 +44,12 @@ public class Info {
     private String notes;
 
     /**
+     * Default constructor for Info object
+     */
+    public Info() {
+    }
+
+    /**
      * Construct a new object for the team's info
      *
      * @param name The name of the team

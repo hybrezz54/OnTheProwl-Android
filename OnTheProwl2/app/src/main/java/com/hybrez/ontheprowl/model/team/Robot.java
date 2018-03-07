@@ -54,6 +54,12 @@ public class Robot {
     private String uri;
 
     /**
+     * Default connstructor for Robot object
+     */
+    public Robot() {
+    }
+
+    /**
      * Construct a new object for the team's robot
      *
      * @param name The robot's name

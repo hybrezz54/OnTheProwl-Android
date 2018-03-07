@@ -40,13 +40,13 @@ public class TeamActivity extends AppCompatActivity implements
                 case R.id.navigation_info:
                     // Replace frame with InfoFragment and update title
                     getSupportActionBar().setTitle(mTeam.getInfo().getName());
-                    ft.replace(R.id.content, mInfoFrag)
+                    ft.replace(R.id.content_team, mInfoFrag)
                             .commit();
                     return true;
                 case R.id.navigation_robot:
                     // Replace frame with RobotFragment and update title
                     getSupportActionBar().setTitle(mTeam.getNumber() + "'s Robot");
-                    ft.replace(R.id.content, mRobotFrag)
+                    ft.replace(R.id.content_team, mRobotFrag)
                             .commit();
                     return true;
             }

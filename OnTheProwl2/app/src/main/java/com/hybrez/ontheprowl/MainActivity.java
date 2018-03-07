@@ -2,8 +2,12 @@ package com.hybrez.ontheprowl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.hybrez.ontheprowl.config.view.ConfigActivity;
 import com.hybrez.ontheprowl.manager.ConfigManager;
@@ -37,6 +41,10 @@ public class MainActivity extends AppCompatActivity implements TeamFragment.OnTe
         // TODO: get instances of two viewmodels
 
         // TODO: inflate the fragment
+        TeamFragment fragment = TeamFragment.newInstance();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_main, fragment)
+                .commit();
 
         // find views in layout
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
@@ -49,6 +57,26 @@ public class MainActivity extends AppCompatActivity implements TeamFragment.OnTe
         });
 
         // TODO: update fragment with viewmodel data
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO: Handle menu item selection
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                Intent intent = new Intent(this, ConfigActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
