@@ -3,25 +3,28 @@ package com.hybrez.ontheprowl.config.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.hybrez.ontheprowl.Constants;
+import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.config.EventAdapter;
 import com.hybrez.ontheprowl.manager.ConfigManager;
-import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.manager.SharedMap;
 import com.hybrez.ontheprowl.manager.TheBlueAllianceService;
 import com.hybrez.ontheprowl.model.Event;
@@ -29,6 +32,7 @@ import com.hybrez.ontheprowl.util.SpinnerPreference;
 import com.hybrez.ontheprowl.util.io.IOUtils;
 import com.hybrez.ontheprowl.util.io.JSONUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -50,30 +54,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class ConfigActivity extends AppCompatPreferenceActivity implements Callback<List<Event>> {
-
-    /** Default event key */
-    private static final String DEFAULT_VALUE = "2017ncral";
-
-    /** Selected event key */
-    private String mEventKey;
-
-    /** Team number set by user */
-    private String mNumber;
-
-    /** FRC Season set by user */
-    private String mSeason;
+public class ConfigActivity extends AppCompatPreferenceActivity {
 
     /**
      * Construct a new ConfigActivity class
      */
     public ConfigActivity() {
-        // retrieve team number set by user
-        mNumber = ConfigManager.getTeamNumber(this);
-        mSeason = ConfigManager.getSeason(this);
-
-        // check if user has set other settings
-//        if (mNumber.length() < 1 || mSeason.length() != 4)
     }
 
     /**
@@ -186,7 +172,15 @@ public class ConfigActivity extends AppCompatPreferenceActivity implements Callb
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
+    public static class GeneralPreferenceFragment extends PreferenceFragment implements Callback<List<Event>>,
+            SharedPreferences.OnSharedPreferenceChangeListener {
+
+        /** Team number set by user */
+        private String mNumber;
+
+        /** FRC Season set by user */
+        private String mSeason;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -207,34 +201,98 @@ public class ConfigActivity extends AppCompatPreferenceActivity implements Callb
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), ConfigActivity.class));
+                getActivity().onBackPressed();
                 return true;
             }
             return super.onOptionsItemSelected(item);
         }
-    }
 
-    @Override
-    public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-        // get the events
-        List<Event> events = response.body();
-        Collections.sort(events, new Comparator<Event>() {
-            @Override
-            public int compare(Event event1, Event event2) {
-                return event1.getName().compareTo(event2.getName());
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+            // retrieve team number set by user
+            mNumber = ConfigManager.getTeamNumber(getActivity());
+            mSeason = ConfigManager.getSeason(getActivity());
+
+            // check if user has set other settings
+            if (mNumber.length() > 1 && mSeason.length() == 4) {
+                getEvents();
             }
-        });
-//        ((SpinnerPreference.EventAdapter) mSpinner.getAdapter()).notifyDataSetChanged();
+        }
 
-        // save events
-        String file = SharedMap.getInstance(this).getEventCachePath(mNumber, mSeason);
-        JSONUtil.write(file, events);
-    }
+        @Override
+        public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+            // get the events
+            List<Event> events = response.body();
+            Collections.sort(events, new Comparator<Event>() {
+                @Override
+                public int compare(Event event1, Event event2) {
+                    return event1.getName().compareTo(event2.getName());
+                }
+            });
 
-    @Override
-    public void onFailure(Call<List<Event>> call, Throwable t) {
-        Snackbar.make(getListView(), getString(R.string.download_failure),
-                Snackbar.LENGTH_LONG).show();
+            // TODO: set the events
+
+            // save events
+            String file = SharedMap.getInstance(getActivity()).getEventCachePath(mNumber, mSeason);
+            JSONUtil.write(file, events);
+        }
+
+        @Override
+        public void onFailure(Call<List<Event>> call, Throwable t) {
+            Snackbar.make(getView(), getString(R.string.download_failure),
+                    Snackbar.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+//            getPreferenceManager().getSharedPreferences()
+//                    .registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+//            getPreferenceManager().getSharedPreferences()
+//                    .unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        /**
+         * Check if events are stored in cache. If not,
+         * get the events from The Blue Alliance.
+         */
+        private void getEvents() {
+            if (!addTeamsFromStorage()) {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(Constants.TBA_BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                TheBlueAllianceService service = retrofit.create(TheBlueAllianceService.class);
+                Call<List<Event>> call = service.listEventsByTeam("frc" + mNumber,
+                        mSeason, Constants.TBA_AUTH_KEY);
+                call.enqueue(this);
+            }
+        }
+
+        /**
+         * Add events from a file if
+         * stored on previous use of app
+         *
+         * @return Whether or not file exists
+         */
+        private boolean addTeamsFromStorage() {
+            String file = SharedMap.getInstance(getActivity())
+                    .getEventCachePath(mNumber, mSeason);
+            boolean fileExists = IOUtils.doesFileExist(file);
+
+            if (fileExists) {
+                List<Event> events = JSONUtil.read(file);
+                // TODO: add to spinner adapter
+            }
+
+            return fileExists;
+        }
     }
 
     /**
@@ -292,65 +350,6 @@ public class ConfigActivity extends AppCompatPreferenceActivity implements Callb
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
-    }
-
-    /**
-     * Check if events are stored in cache. If not,
-     * get the events from The Blue Alliance.
-     */
-    private void getEvents() {
-        if (!addTeamsFromStorage()) {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.TBA_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            TheBlueAllianceService service = retrofit.create(TheBlueAllianceService.class);
-            Call<List<Event>> call = service.listEventsByTeam("frc" + mNumber,
-                    mSeason, Constants.TBA_AUTH_KEY);
-            call.enqueue(this);
-        }
-    }
-
-    /**
-     * Add events from a file if
-     * stored on previous use of app
-     *
-     * @return Whether or not file exists
-     */
-    private boolean addTeamsFromStorage() {
-        String file = SharedMap.getInstance(this)
-                .getEventCachePath(mNumber, mSeason);
-        boolean fileExists = IOUtils.doesFileExist(file);
-
-        if (fileExists) {
-            List<Event> events = JSONUtil.read(file);
-            // TODO: update spinnerpreference's adapter
-//            EventAdapter adapter = ((EventAdapter) mSpinner.getAdapter());
-//            adapter.clear();
-//            adapter.addAll(events);
-//            adapter.notifyDataSetChanged();
-        }
-
-        return fileExists;
-    }
-
-    /**
-     * Returns the index of the given value in the list of events
-     *
-     * @param value The value whose index should be returned.
-     * @param events The list of events to seach in
-     * @return The index of the value, or -1 if not found.
-     */
-    public int findIndexOfValue(String value, List<Event> events) {
-        if (value != null && events != null) {
-            for (int i = events.size() - 1; i >= 0; i--) {
-                if (events.get(i).getName().equals(value)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
     }
 
 }

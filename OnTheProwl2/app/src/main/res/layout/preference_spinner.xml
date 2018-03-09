@@ -10,7 +10,7 @@
     android:paddingRight="15dp">
 
     <TextView
-        android:text="@string/pref_title_event"
+        android:id="@+id/pref_title"
         android:fontFamily="sans-serif"
         android:textColor="@android:color/black"
         android:textSize="16sp"
@@ -19,7 +19,7 @@
         android:layout_height="match_parent" />
 
     <android.support.v7.widget.AppCompatSpinner
-        android:id="@+id/spinner_event"
+        android:id="@+id/pref_spinner"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

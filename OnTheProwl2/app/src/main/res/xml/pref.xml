@@ -1,4 +1,6 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <EditTextPreference
         android:key="team_number"
@@ -15,9 +17,11 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_title_frc_season" />
 
-    <com.hybrez.ontheprowl.util.SpinnerPreference
+    <com.hybrez.ontheprowl.EventPreference
         android:key="frc_event"
-        android:layout="@layout/preference_event" />
+        app:title="@string/pref_title_frc_event"
+        app:entries="@array/pref_titles_frc_events"
+        app:entryValues="@array/pref_values_frc_events" />
 
     <EditTextPreference
         android:key="server_url"

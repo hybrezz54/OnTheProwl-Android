@@ -2,6 +2,7 @@ package com.hybrez.ontheprowl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements TeamFragment.OnTe
         if (ConfigManager.isInitialLaunch(this)) {
             ConfigManager.setNotInitialLaunch(this);
             Intent intent = new Intent(this, ConfigActivity.class);
+            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
+                    ConfigActivity.GeneralPreferenceFragment.class.getName());
+            //intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
             startActivity(intent);
         }
 
@@ -72,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements TeamFragment.OnTe
         switch (item.getItemId()) {
             case R.id.menu_settings:
                 Intent intent = new Intent(this, ConfigActivity.class);
+                intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
+                        ConfigActivity.GeneralPreferenceFragment.class.getName());
+                //intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
                 startActivity(intent);
                 return true;
             default:

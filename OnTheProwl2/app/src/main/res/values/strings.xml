@@ -15,10 +15,21 @@
     <string name="pref_title_frc_event">Event</string>
 
     <string-array name="pref_titles_frc_seasons">
-        <item>FRC STEAMWORKS</item>
+        <item>FIRST POWER UP</item>
+        <item>FIRST STEAMWORKS</item>
     </string-array>
     <string-array name="pref_values_frc_seasons">
+        <item>2018</item>
         <item>2017</item>
+    </string-array>
+
+    <string-array name="pref_titles_frc_events">
+        <item>Raleigh District Event</item>
+        <item>Greensboro District Event</item>
+    </string-array>
+    <string-array name="pref_values_frc_events">
+        <item>2018ncral</item>
+        <item>2018ncgre</item>
     </string-array>
 
     <string name="pref_number_season_not_set">Set Team Number and FRC Season first!</string>
