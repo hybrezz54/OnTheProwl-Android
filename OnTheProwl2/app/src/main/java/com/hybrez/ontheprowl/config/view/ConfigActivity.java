@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.hybrez.ontheprowl.Constants;
+import com.hybrez.ontheprowl.EventPreference;
 import com.hybrez.ontheprowl.R;
 import com.hybrez.ontheprowl.config.EventAdapter;
 import com.hybrez.ontheprowl.manager.ConfigManager;
@@ -172,14 +173,11 @@ public class ConfigActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment implements Callback<List<Event>>,
+    public static class GeneralPreferenceFragment extends PreferenceFragment implements
             SharedPreferences.OnSharedPreferenceChangeListener {
 
-        /** Team number set by user */
-        private String mNumber;
-
-        /** FRC Season set by user */
-        private String mSeason;
+        /** The event preference */
+        private EventPreference mEventPref;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -187,14 +185,20 @@ public class ConfigActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref);
             setHasOptionsMenu(true);
 
+            // get the event preference
+            mEventPref = (EventPreference) findPreference("frc_event");
+
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("team_number"));
             bindPreferenceSummaryToValue(findPreference("frc_season"));
-            bindPreferenceSummaryToValue(findPreference("frc_event"));
+            bindPreferenceSummaryToValue(mEventPref);
             bindPreferenceSummaryToValue(findPreference("server_url"));
+
+            // update event preference
+            checkEventKey();
         }
 
         @Override
@@ -209,90 +213,34 @@ public class ConfigActivity extends AppCompatPreferenceActivity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-            // retrieve team number set by user
-            mNumber = ConfigManager.getTeamNumber(getActivity());
-            mSeason = ConfigManager.getSeason(getActivity());
-
-            // check if user has set other settings
-            if (mNumber.length() > 1 && mSeason.length() == 4) {
-                getEvents();
-            }
-        }
-
-        @Override
-        public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-            // get the events
-            List<Event> events = response.body();
-            Collections.sort(events, new Comparator<Event>() {
-                @Override
-                public int compare(Event event1, Event event2) {
-                    return event1.getName().compareTo(event2.getName());
-                }
-            });
-
-            // TODO: set the events
-
-            // save events
-            String file = SharedMap.getInstance(getActivity()).getEventCachePath(mNumber, mSeason);
-            JSONUtil.write(file, events);
-        }
-
-        @Override
-        public void onFailure(Call<List<Event>> call, Throwable t) {
-            Snackbar.make(getView(), getString(R.string.download_failure),
-                    Snackbar.LENGTH_LONG).show();
+            checkEventKey();
         }
 
         @Override
         public void onResume() {
             super.onResume();
-//            getPreferenceManager().getSharedPreferences()
-//                    .registerOnSharedPreferenceChangeListener(this);
+            getPreferenceManager().getSharedPreferences()
+                    .registerOnSharedPreferenceChangeListener(this);
         }
 
         @Override
         public void onPause() {
             super.onPause();
-//            getPreferenceManager().getSharedPreferences()
-//                    .unregisterOnSharedPreferenceChangeListener(this);
+            getPreferenceManager().getSharedPreferences()
+                    .unregisterOnSharedPreferenceChangeListener(this);
         }
 
-        /**
-         * Check if events are stored in cache. If not,
-         * get the events from The Blue Alliance.
-         */
-        private void getEvents() {
-            if (!addTeamsFromStorage()) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(Constants.TBA_BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+        private void checkEventKey() {
+            // retrieve team number set by user
+            String number = ConfigManager.getTeamNumber(getActivity());
+            String season = ConfigManager.getSeason(getActivity());
 
-                TheBlueAllianceService service = retrofit.create(TheBlueAllianceService.class);
-                Call<List<Event>> call = service.listEventsByTeam("frc" + mNumber,
-                        mSeason, Constants.TBA_AUTH_KEY);
-                call.enqueue(this);
+            // check if user has set other settings
+            if (number.length() > 1 && season.length() == 4) {
+                mEventPref.updateEvents(number, season);
             }
         }
 
-        /**
-         * Add events from a file if
-         * stored on previous use of app
-         *
-         * @return Whether or not file exists
-         */
-        private boolean addTeamsFromStorage() {
-            String file = SharedMap.getInstance(getActivity())
-                    .getEventCachePath(mNumber, mSeason);
-            boolean fileExists = IOUtils.doesFileExist(file);
-
-            if (fileExists) {
-                List<Event> events = JSONUtil.read(file);
-                // TODO: add to spinner adapter
-            }
-
-            return fileExists;
-        }
     }
 
     /**

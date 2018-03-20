@@ -19,9 +19,7 @@
 
     <com.hybrez.ontheprowl.EventPreference
         android:key="frc_event"
-        app:title="@string/pref_title_frc_event"
-        app:entries="@array/pref_titles_frc_events"
-        app:entryValues="@array/pref_values_frc_events" />
+        app:title="@string/pref_title_frc_event" />
 
     <EditTextPreference
         android:key="server_url"

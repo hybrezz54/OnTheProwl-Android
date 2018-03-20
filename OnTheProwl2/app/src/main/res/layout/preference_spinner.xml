@@ -14,9 +14,11 @@
         android:fontFamily="sans-serif"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:gravity="left"
+        android:textAlignment="gravity" />
 
     <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/pref_spinner"
